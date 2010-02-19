@@ -101,6 +101,12 @@ public class AndroidAPE extends Activity {
 
         // tell system to use the layout defined in our XML file
         setContentView(R.layout.main);
+        
+//        tv.setText("Welcome to the ape-for-android testbed! Created by Michiel van den Anker");
+//        tv.append("This testbed uses SnowFlake's game template; thanks!");
+//        tv.append("APE was originally created by Alec Cove");
+//        tv.append("First conversion to Java by Theo Galanakis");
+
 
         // get handles to the LunarView from XML, and its LunarThread
         mGameView = (GameView) findViewById(R.id.game);

@@ -8,7 +8,6 @@ import nl.blissfulthinking.java.android.ape.AbstractParticle;
 import nl.blissfulthinking.java.android.ape.CircleParticle;
 import nl.blissfulthinking.java.android.ape.RectangleParticle;
 import nl.blissfulthinking.java.android.ape.SpringConstraint;
-
 import android.graphics.Canvas;
 
 public class PhysicsWorld {
@@ -100,6 +99,7 @@ public class PhysicsWorld {
 //		Log.d("Screen Size","width: "+GameView.width+" height: "+GameView.height);
 	}  
 	
+	@SuppressWarnings("static-access")
 	public void initWorld() {
 
 		
@@ -164,50 +164,50 @@ public class PhysicsWorld {
 //			APEngine.addParticle(new CircleParticle(px2+size2,py2+size2,size2,false,3.0f+(i/10),0.4f,0.002f));
 //		}
 //		
-//		int posx = 50;
-//		int posy = 50;
-//		int size = 40;
-//		int halfsize = 20; 
-//		int cornersize = 5;
-//		boolean collidable = true;
-//		CircleParticle a = new CircleParticle(posx-halfsize,posy-halfsize,cornersize,false,1.0f,0.05f,0.002f);
-//		world.addParticle(a);
-//		CircleParticle b = new CircleParticle(posx+halfsize,posy-halfsize,cornersize,false,1.0f,0.05f,0.002f);
-//		world.addParticle(b);
-//		CircleParticle c = new CircleParticle(posx+halfsize,posy+halfsize,cornersize,false,1.0f,0.05f,0.002f);
-//		world.addParticle(c);
-//		CircleParticle d = new CircleParticle(posx-halfsize,posy+halfsize,cornersize,false,1.0f,0.05f,0.002f);
-//		world.addParticle(d);
-//		SpringConstraint ab = new SpringConstraint(a,b,1.0f);
-//		ab.setCollidable(true);
-//		ab.setCollisionRectWidth(FP.fromFloat(5.0f));
+		int posx = 50;
+		int posy = 50;
+		int size = 40;
+		int halfsize = 20; 
+		int cornersize = 5;
+		boolean collidable = true;
+		CircleParticle a = new CircleParticle(posx-halfsize,posy-halfsize,cornersize,false,1.0f,0.05f,0.002f);
+		world.addParticle(a);
+		CircleParticle b = new CircleParticle(posx+halfsize,posy-halfsize,cornersize,false,1.0f,0.05f,0.002f);
+		world.addParticle(b);
+		CircleParticle c = new CircleParticle(posx+halfsize,posy+halfsize,cornersize,false,1.0f,0.05f,0.002f);
+		world.addParticle(c);
+		CircleParticle d = new CircleParticle(posx-halfsize,posy+halfsize,cornersize,false,1.0f,0.05f,0.002f);
+		world.addParticle(d);
+		SpringConstraint ab = new SpringConstraint(a,b,1.0f);
+		ab.setCollidable(true);
+		ab.setCollisionRectWidth(FP.fromFloat(7.0f));
+		ab.setCollisionRectScale(FP.fromFloat(1.f));
+		world.addConstraint(ab);
+		SpringConstraint bc = new SpringConstraint(b,c,1.0f);
+		bc.setCollidable(collidable);
+		bc.setCollisionRectWidth(FP.fromFloat(7.0f));
+		bc.setCollisionRectScale(FP.fromFloat(1.0f));
+		world.addConstraint(bc);
+		SpringConstraint cd = new SpringConstraint(c,d,1.0f);
+		cd.setCollidable(collidable);
+		cd.setCollisionRectWidth(FP.fromFloat(7.0f));
+		cd.setCollisionRectScale(FP.fromFloat(1.0f));
+		world.addConstraint(cd);
+		SpringConstraint da = new SpringConstraint(d,a,1.0f);
+		da.setCollidable(collidable);
+		da.setCollisionRectWidth(FP.fromFloat(7.0f));
+		da.setCollisionRectScale(FP.fromFloat(1.0f));
+		world.addConstraint(da);
+		SpringConstraint ac = new SpringConstraint(a,c,1.0f);
+		ac.setCollidable(false);
+//		ab.setCollisionRectWidth(FP.fromFloat(4.0f));
 //		ab.setCollisionRectScale(FP.fromFloat(0.9f));
-//		world.addConstraint(ab);
-//		SpringConstraint bc = new SpringConstraint(b,c,1.0f);
-//		bc.setCollidable(collidable);
-//		bc.setCollisionRectWidth(FP.fromFloat(5.0f));
-//		bc.setCollisionRectScale(FP.fromFloat(0.9f));
-//		world.addConstraint(bc);
-//		SpringConstraint cd = new SpringConstraint(c,d,1.0f);
-//		cd.setCollidable(collidable);
-//		cd.setCollisionRectWidth(FP.fromFloat(5.0f));
-//		cd.setCollisionRectScale(FP.fromFloat(0.9f));
-//		world.addConstraint(cd);
-//		SpringConstraint da = new SpringConstraint(d,a,1.0f);
-//		da.setCollidable(collidable);
-//		da.setCollisionRectWidth(FP.fromFloat(5.0f));
-//		da.setCollisionRectScale(FP.fromFloat(0.9f));
-//		world.addConstraint(da);
-//		SpringConstraint ac = new SpringConstraint(a,c,1.0f);
-//		ac.setCollidable(false);
-////		ab.setCollisionRectWidth(FP.fromFloat(4.0f));
-////		ab.setCollisionRectScale(FP.fromFloat(0.9f));
-//		world.addConstraint(ac);
-//		SpringConstraint bd = new SpringConstraint(b,d,1.0f);
-//		ac.setCollidable(false);
-////		ab.setCollisionRectWidth(FP.fromFloat(4.0f));
-////		ab.setCollisionRectScale(FP.fromFloat(0.9f));
-//		world.addConstraint(bd);
+		world.addConstraint(ac);
+		SpringConstraint bd = new SpringConstraint(b,d,1.0f);
+		ac.setCollidable(false);
+//		ab.setCollisionRectWidth(FP.fromFloat(4.0f));
+//		ab.setCollisionRectScale(FP.fromFloat(0.9f));
+		world.addConstraint(bd);
 		
 		// surfaces
 		int thikness = 200;
@@ -273,46 +273,89 @@ public class PhysicsWorld {
 //		world.addConstraint(rotConnector);
 //		
 //		// bridge
-//		RectangleParticle bridgeStart = new RectangleParticle(0,70,10,25,0,true,1.0f,0.3f,0);
+//		RectangleParticle bridgeStart = new RectangleParticle(0.0f,10.0f,10.0f,25.0f,0.0f,true,1.0f,0.3f,0.0f,true);
 //		world.addParticle(bridgeStart);
 //		
-//		RectangleParticle bridgeEnd = new RectangleParticle(290,70,100,25,0,true,1,0.3f,0);
+//		RectangleParticle bridgeEnd = new RectangleParticle(290.0f,10.0f,100.0f,25.0f,0.0f,true,1.0f,0.3f,0.0f,true);
 //		world.addParticle(bridgeEnd);
 //		
-//		CircleParticle bridgePA = new CircleParticle(10,70,4,false,1,0.3f,0);
+//		CircleParticle bridgePA = new CircleParticle(10.0f,70.0f,15.0f,false,1.0f,0.3f,0.0f);
 //		world.addParticle(bridgePA);
 //		
-//		CircleParticle bridgePB = new CircleParticle(50,70,4,false,1,0.3f,0);
+//		CircleParticle bridgePB = new CircleParticle(50.0f,70.0f,15.0f,false,1.0f,0.3f,0.0f);
 //		world.addParticle(bridgePB);
 //		
-//		CircleParticle bridgePC = new CircleParticle(290,70,4,false,1.0f,0.3f,0.0f);
+//		CircleParticle bridgePC = new CircleParticle(290.0f,70.0f,15.0f,false,1.0f,0.3f,0.0f);
 //		world.addParticle(bridgePC);
 //		
-//		SpringConstraint bridgeConnA = new SpringConstraint((RectangleParticle)bridgeStart.getCornerParticles().get(1), bridgePA, 0.9f);
-//		bridgeConnA.setCollidable(true);
-//		bridgeConnA.setCollisionRectScale(FP.fromFloat(10.0f));
-//		bridgeConnA.setCollisionRectScale(FP.fromFloat(0.06f));
+//		SpringConstraint bridgeConnA = new SpringConstraint(bridgeStart, bridgePA, 0.9f);
+//		bridgeConnA.setCollidable(false);
+//		bridgeConnA.setCollisionRectScale(FP.fromFloat(0.3f));
+//		bridgeConnA.setCollisionRectWidth(FP.fromFloat(10.0f));
 //		world.addConstraint(bridgeConnA);
 //
 //		SpringConstraint bridgeConnB = new SpringConstraint(bridgePA, bridgePB, 0.9f);
 //		bridgeConnB.setCollidable(true);
-//		bridgeConnB.setCollisionRectScale(FP.fromFloat(10.0f));
-//		bridgeConnB.setCollisionRectScale(FP.fromFloat(0.06f));
+//		bridgeConnB.setCollisionRectScale(FP.fromFloat(0.3f));
+//		bridgeConnB.setCollisionRectWidth(FP.fromFloat(10.0f));
 //		world.addConstraint(bridgeConnB);
 //		
 //		SpringConstraint bridgeConnC = new SpringConstraint(bridgePB, bridgePC, 0.9f);
 //		bridgeConnC.setCollidable(true);
-//		bridgeConnC.setCollisionRectScale(FP.fromFloat(10.0f));
-//		bridgeConnC.setCollisionRectScale(FP.fromFloat(0.06f));
+//		bridgeConnC.setCollisionRectScale(FP.fromFloat(0.3f));
+//		bridgeConnC.setCollisionRectWidth(FP.fromFloat(8.0f));
 //		world.addConstraint(bridgeConnC);
 //		
-//		SpringConstraint bridgeConnD = new SpringConstraint(bridgePC, (AbstractParticle)bridgeEnd.getCornerParticles().get(0), 0.9f);
-//		bridgeConnD.setCollidable(true);
-//		bridgeConnD.setCollisionRectScale(FP.fromFloat(10.0f));
-//		bridgeConnD.setCollisionRectScale(FP.fromFloat(0.06f));
+//		SpringConstraint bridgeConnD = new SpringConstraint(bridgePC, bridgeEnd, 0.9f);
+//		bridgeConnD.setCollidable(false);
+//		bridgeConnD.setCollisionRectScale(FP.fromFloat(0.3f));
+//		bridgeConnD.setCollisionRectWidth(FP.fromFloat(10.0f));
 //		
 //		world.addConstraint(bridgeConnD);
 		
+		//Pendulum
+		CircleParticle ceilingAnchor = new CircleParticle(GameView.width/2,0.0f,10.0f,true,1.0f,0.3f,0.0f);
+		ceilingAnchor.setCollidable(false);
+		world.addParticle(ceilingAnchor);
+//		RectangleParticle ceilingAnchor = new RectangleParticle(GameView.width/2,0.0f,10.0f,10.0f,0.0f,true,1.0f,0.3f,0.0f,true);
+//		world.addParticle(ceilingAnchor);
+//		
+		
+//		RectangleParticle bridgeEnd = new RectangleParticle(290.0f,10.0f,100.0f,25.0f,0.0f,true,1.0f,0.3f,0.0f,true);
+//		world.addParticle(bridgeEnd);
+		
+		CircleParticle chain1 = new CircleParticle(GameView.width/2,70.0f,20.0f,false,1.0f,0.3f,0.0f);
+		world.addParticle(chain1);
+		
+		CircleParticle chain2 = new CircleParticle(GameView.width/2,140.0f,20.0f,false,1.0f,0.3f,0.0f);
+		world.addParticle(chain2);
+		
+		CircleParticle chain3 = new CircleParticle(GameView.width/2,210.0f,30.0f,false,1.0f,0.3f,0.0f);
+		world.addParticle(chain3);
+		
+		SpringConstraint chainConnection1 = new SpringConstraint(chain1, ceilingAnchor, 0.9f);
+		chainConnection1.setCollidable(true);
+		chainConnection1.setCollisionRectScale(FP.fromFloat(0.8f));
+		chainConnection1.setCollisionRectWidth(FP.fromFloat(5.0f));
+		world.addConstraint(chainConnection1);
+
+		SpringConstraint chainConnection2 = new SpringConstraint(chain1, chain2, 0.9f);
+		chainConnection2.setCollidable(true);
+		chainConnection2.setCollisionRectScale(FP.fromFloat(0.8f));
+		chainConnection2.setCollisionRectWidth(FP.fromFloat(5.0f));
+		world.addConstraint(chainConnection2);
+		
+		SpringConstraint chainConnection3 = new SpringConstraint(chain2, chain3, 0.9f);
+		chainConnection3.setCollidable(true);
+		chainConnection3.setCollisionRectScale(FP.fromFloat(0.8f));
+		chainConnection3.setCollisionRectWidth(FP.fromFloat(5.0f));
+		world.addConstraint(chainConnection3);
+		
+//		SpringConstraint bridgeConnD = new SpringConstraint(chain3, bridgeEnd, 0.9f);
+//		bridgeConnD.setCollidable(false);
+//		bridgeConnD.setCollisionRectScale(FP.fromFloat(0.3f));
+//		bridgeConnD.setCollisionRectWidth(FP.fromFloat(10.0f));
+//		world.addConstraint(bridgeConnD);
 	
 
 		/*

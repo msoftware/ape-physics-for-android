@@ -60,11 +60,13 @@ import android.graphics.Canvas;
 				float elasticity,
 				float friction) {
 			super(x, y, fixed, mass, elasticity, friction);
+//			radius*=APEngine.scale;
 			this.radius = FP.fromFloat(radius);
 		}
 		
 		@Override
 		public final void drawParticle(Canvas c) {
+//			c.drawCircle(FP.toFloat(curr.x)/APEngine.scale,FP.toFloat(curr.y)/APEngine.scale,FP.toFloat(radius)/APEngine.scale,Paints.circlePaint);
 			c.drawCircle(FP.toFloat(curr.x),FP.toFloat(curr.y),FP.toFloat(radius),Paints.circlePaint);
 		}	
 
