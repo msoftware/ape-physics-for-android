@@ -43,10 +43,12 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		
 		public static final Vector force = Vector.getNew(0,0);
 		
+		public static AbstractParticle particles = null;
+		
 		public static final Vector masslessForce = Vector.getNew(0,0);
 			
 		public static int timeStep;
-		private static final ArrayList<AbstractParticle> particles = new ArrayList<AbstractParticle>();
+//		private static final ArrayList<AbstractParticle> particles = new ArrayList<AbstractParticle>();
 		
 		private static final ArrayList<AbstractConstraint> constraints = new ArrayList<AbstractConstraint>();
 		
@@ -158,7 +160,11 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		 * @param p The particle to be added.
 		 */
 		public static final void addParticle(AbstractParticle p) {
-			particles.add(p); // adds to the end of the list http://java.sun.com/j2se/1.4.2/docs/api/java/util/ArrayList.html		
+			if(particles != null) {
+				p.next = particles;
+			}
+			particles = p;
+//			particles.add(p); // adds to the end of the list http://java.sun.com/j2se/1.4.2/docs/api/java/util/ArrayList.html		
 		}
 		
 		
@@ -168,9 +174,12 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		 * @param p The particle to be removed.
 		 */
 		public static final void removeParticle(AbstractParticle p) {
-			int ppos = particles.indexOf(p);
-			if (ppos == -1) return;
-			particles.remove(ppos);
+			if(particles != null) {
+				particles.remove(p,null);
+			}
+//			int ppos = particles.indexOf(p);
+//			if (ppos == -1) return;
+//			particles.remove(ppos);
 		}
 		
 		
@@ -206,12 +215,16 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 //			return a;
 //		}
 	
-		/**
-		 * Returns an array of every particle added to the engine.
-		 */
-		public static final ArrayList<AbstractParticle> getAllParticles() {
+//		/**
+//		 * Returns an array of every particle added to the engine.
+//		 */
+//		public static final ArrayList<AbstractParticle> getAllParticles() {
+//			return particles;
+//		}	
+		
+		public static final AbstractParticle getFirstParticle() {
 			return particles;
-		}	
+		}
 		
 //		/**
 //		 * Returns an array of every custom particle added to the engine. A custom
@@ -280,13 +293,26 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 //		}
 
 		private static final void integrate() {
-			int size = particles.size();
-			for (int i = 0; i < size; i++) {
-				if (particles.get(i) instanceof RectangleParticle)  
-					((RectangleParticle)particles.get(i)).update(timeStep);
-				else if (particles.get(i) instanceof CircleParticle) 
-					((CircleParticle)particles.get(i)).update(timeStep);
+//			int size = particles.size();
+			if(particles == null) {
+				return;
 			}
+			AbstractParticle current = particles;
+			while(current != null) {
+				if (current instanceof RectangleParticle) {  
+					((RectangleParticle)current).update(timeStep);
+				}
+				else if (current instanceof CircleParticle) {
+					((CircleParticle)current).update(timeStep);
+				}
+				current = current.next;
+			}
+//			for (int i = 0; i < size; i++) {
+//				if (particles.get(i) instanceof RectangleParticle)  
+//					((RectangleParticle)particles.get(i)).update(timeStep);
+//				else if (particles.get(i) instanceof CircleParticle) 
+//					((CircleParticle)particles.get(i)).update(timeStep);
+//			}
 		}
 	
 		private static final void satisfyConstraints() {
@@ -306,28 +332,56 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		 * SpringConstraint for collision
 		 */
 		private static final void checkCollisions() {
-			int size0 = particles.size();
+			if(particles == null) {
+				return;
+			}
+//			int size0 = particles.size();
 			int size1 = constraints.size();
-			for (int j = 0; j < size0; j++) {
+
+			AbstractParticle current0 = particles;
+			AbstractParticle current1;
+			while(current0 != null) {
 				
-				AbstractParticle pa = particles.get(j);
-				
-				for (int i = j + 1; i < size0; i++) {
-					AbstractParticle pb = particles.get(i);
-					if (pa.collidable && pb.collidable) {
-						CollisionDetector.test(pa, pb);
-					}
+				current1 = current0.next;
+				while(current1 != null) {
+//					if (current0.collidable && current1.collidable) {
+						CollisionDetector.test(current0,current1);
+						current1 = current1.next;
+//					}
 				}
 				
 				for (int n = 0; n < size1; n++) {
 					//MvdA TODO was dead code
 //					if (constraints.get(n) instanceof AngularConstraint) continue;
 					SpringConstraint c = (SpringConstraint)constraints.get(n);
-					if (pa.collidable && c.collidable && ! c.isConnectedTo(pa)) {
-						CollisionDetector.test(pa,c.getCollisionRect());
+					if (current0.collidable && c.collidable && ! c.isConnectedTo(current0)) {
+						CollisionDetector.test(current0,c.getCollisionRect());
 					}
 				}
-				pa.isColliding = false;	
+				current0.isColliding = false;	
+				
+				current0 = current0.next;
 			}
+//			for (int j = 0; j < size0; j++) {
+//				
+//				AbstractParticle pa = particles.get(j);
+//				
+//				for (int i = j + 1; i < size0; i++) {
+//					AbstractParticle pb = particles.get(i);
+//					if (pa.collidable && pb.collidable) {
+//						CollisionDetector.test(pa, pb);
+//					}
+//				}
+//				
+//				for (int n = 0; n < size1; n++) {
+//					//MvdA TODO was dead code
+////					if (constraints.get(n) instanceof AngularConstraint) continue;
+//					SpringConstraint c = (SpringConstraint)constraints.get(n);
+//					if (pa.collidable && c.collidable && ! c.isConnectedTo(pa)) {
+//						CollisionDetector.test(pa,c.getCollisionRect());
+//					}
+//				}
+//				pa.isColliding = false;	
+//			}
 		}
 	}	
