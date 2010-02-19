@@ -28,8 +28,6 @@ package nl.blissfulthinking.java.android.ape;
 import nl.blissfulthinking.java.android.apeforandroid.FP;
 import nl.blissfulthinking.java.android.apeforandroid.Paints;
 import android.graphics.Canvas;
-import android.graphics.Path;
-import android.graphics.RectF;
 
 	/**
 	 * A rectangular shaped particle. 
@@ -79,6 +77,10 @@ import android.graphics.RectF;
 
 			super(x, y, fixed, mass, elasticity, friction);
 			
+//			width*=APEngine.scale;
+//			height*=APEngine.scale;
+//			
+			
 			extents[0] = FP.div(FP.fromFloat(width),FP.TWO);
 			extents[1] = FP.div(FP.fromFloat(height),FP.TWO);
 			
@@ -114,6 +116,30 @@ import android.graphics.RectF;
 //					c.drawLine(X1,Y1,X2,Y2,Paints.rectanglePaint);
 //					
 //			}
+//			//MvdA TODO not sure if this is faster
+//			float X1 = FP.toFloat(cornerPositions[0].x)/APEngine.scale;
+//			float Y1 = FP.toFloat(cornerPositions[0].y)/APEngine.scale;
+//			float X2 = FP.toFloat(cornerPositions[1].x)/APEngine.scale;
+//			float Y2 = FP.toFloat(cornerPositions[1].y)/APEngine.scale;
+//			c.drawLine(X1,Y1,X2,Y2,Paints.rectanglePaint);
+//			
+//			X1 = FP.toFloat(cornerPositions[1].x)/APEngine.scale;
+//			Y1 = FP.toFloat(cornerPositions[1].y)/APEngine.scale;
+//			X2 = FP.toFloat(cornerPositions[2].x)/APEngine.scale;
+//			Y2 = FP.toFloat(cornerPositions[2].y)/APEngine.scale;
+//			c.drawLine(X1,Y1,X2,Y2,Paints.rectanglePaint);
+//			
+//			X1 = FP.toFloat(cornerPositions[2].x)/APEngine.scale;
+//			Y1 = FP.toFloat(cornerPositions[2].y)/APEngine.scale;
+//			X2 = FP.toFloat(cornerPositions[3].x)/APEngine.scale;
+//			Y2 = FP.toFloat(cornerPositions[3].y)/APEngine.scale;
+//			c.drawLine(X1,Y1,X2,Y2,Paints.rectanglePaint);
+//			
+//			X1 = FP.toFloat(cornerPositions[3].x)/APEngine.scale;
+//			Y1 = FP.toFloat(cornerPositions[3].y)/APEngine.scale;
+//			X2 = FP.toFloat(cornerPositions[0].x)/APEngine.scale;
+//			Y2 = FP.toFloat(cornerPositions[0].y)/APEngine.scale;
+//			c.drawLine(X1,Y1,X2,Y2,Paints.rectanglePaint);
 			//MvdA TODO not sure if this is faster
 			float X1 = FP.toFloat(cornerPositions[0].x);
 			float Y1 = FP.toFloat(cornerPositions[0].y);
@@ -138,7 +164,6 @@ import android.graphics.RectF;
 			X2 = FP.toFloat(cornerPositions[0].x);
 			Y2 = FP.toFloat(cornerPositions[0].y);
 			c.drawLine(X1,Y1,X2,Y2,Paints.rectanglePaint);
-			
 		 }
 		
 		

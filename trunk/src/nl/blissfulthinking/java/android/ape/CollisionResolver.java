@@ -66,10 +66,10 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		 	// calculate the coefficient of restitution based on the mass
 			(cb.vn.supply_mult(FP.mul((te + FP.ONE),mb), tmp1).supply_plus(ca.vn.supply_mult(ma - FP.mul(te,mb), tmp2),vnA)).divEquals(tm);		
 			(ca.vn.supply_mult(FP.mul((te + FP.ONE),ma), tmp1).supply_plus(cb.vn.supply_mult(mb - FP.mul(te,ma), tmp2),vnB)).divEquals(tm);
-//			final Vector vnA = (cb.vn.supply_mult(FP.mul((te + FP.ONE),mb), tmp1).pool_plus(ca.vn.supply_mult(ma - FP.mul(te,mb), tmp2))).divEquals(tm);		
-//			final Vector vnB = (ca.vn.supply_mult(FP.mul((te + FP.ONE),ma), tmp1).pool_plus(cb.vn.supply_mult(mb - FP.mul(te,ma), tmp2))).divEquals(tm);
-//			final Vector vnA = (cb.vn.supply_mult(FP.mul((te + one),mb), tmp1).pool_plus(ca.vn.supply_mult(FP.mul(ma - te,mb), tmp2))).divEquals(tm);		
-//			final Vector vnB = (ca.vn.supply_mult(FP.mul((te + one),ma), tmp1).pool_plus(cb.vn.supply_mult(FP.mul(mb - te,ma), tmp2))).divEquals(tm);
+//			(cb.vn.supply_mult(FP.mul((te + FP.ONE),mb), tmp1).supply_plus(ca.vn.supply_mult(ma - FP.mul(te,mb), tmp2),vnA)).divEquals(tm);		
+//			(ca.vn.supply_mult(FP.mul((te + FP.ONE),ma), tmp1).supply_plus(cb.vn.supply_mult(mb - FP.mul(te,ma), tmp2),vnB)).divEquals(tm);
+//			(cb.vn.supply_mult(FP.mul((te + FP.ONE),mb), tmp1).supply_plus(ca.vn.supply_mult(FP.mul(ma - te,mb), tmp2),vnA)).divEquals(tm);		
+//			(ca.vn.supply_mult(FP.mul((te + FP.ONE),ma), tmp1).supply_plus(cb.vn.supply_mult(FP.mul(mb - te,ma), tmp2),vnB)).divEquals(tm);
 			
 			ca.vt.multEquals(tf);
 			cb.vt.multEquals(tf);

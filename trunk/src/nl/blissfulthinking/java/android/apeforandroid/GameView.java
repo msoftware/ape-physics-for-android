@@ -11,6 +11,7 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -37,8 +38,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
         public static final int STATE_RUNNING = 4;
         public static final int STATE_WIN = 5;
         
-//        private float x;
-//        private float y;
+//      private float x;
+//      private float y;
      
         private int fingerX = 0;
         private int fingerY = 0;
@@ -76,6 +77,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
             mSurfaceHolder = surfaceHolder;
 //          mHandler = handler;
 //          mContext = context;
+            
+            
         	
 //          x = 10;
 //          y = 10;
@@ -118,9 +121,20 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
                 try {
                     c = mSurfaceHolder.lockCanvas(null);
                     synchronized (mSurfaceHolder) {
-                        if (mMode == STATE_RUNNING) 
+//                    	Log.i("state","state="+mMode);
+                    	if(mMode == STATE_READY) {
+                    		drawReadyScreen(c);
+                    	}
+                        if (mMode == STATE_RUNNING) {
                         	updateGame();
-                        doDraw(c);
+                        	doDraw(c);
+                    	}
+                    	else if(mMode == STATE_READY) {
+                    		drawReadyScreen(c);
+                    	}
+                    	else {
+                    		drawReadyScreen(c);
+                    	}
                     }
                 } finally {
                     // do this in a finally so that if an exception is thrown
@@ -145,7 +159,12 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
             mRun = b;
         }
 
-        /**
+        public void drawReadyScreen(Canvas c) {
+			c.drawText("ape-for-android alpha testbed", 20, 25, Paints.textpaint);
+			c.drawCircle(50,50,40,Paints.rectanglePaint);
+		}
+
+		/**
          * Sets the game mode. That is, whether we are running, paused, in the
          * failure state, in the victory state, etc.
          * 
@@ -278,8 +297,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
 //        		ygrav = -4;
 //         	}
         	
-//        	APEngine.addParticle(new RectangleParticle(fingerX,fingerY,25,25,0.0f,false,3.0f,0.001f,0.01f));
-			APEngine.addParticle(new CircleParticle(fingerX,fingerY,25,false,1.0f,0.005f,0.06f));
+//        	APEngine.addParticle(new RectangleParticle(fingerX,fingerY,25,25,0.0f,false,3.0f,0.001f,0.01f,true));
+			APEngine.addParticle(new CircleParticle(fingerX,fingerY,20,false,0.5f,0.1f,0.02f));
          
 //			physicsWorld.setGravity(xgrav,ygrav);
 //         	APEngine.addForce(FP.fromInt(xgrav),FP.fromInt(ygrav));
@@ -322,7 +341,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
             
         	//MvdA TODO could manage APE's speed here
         	
-           	physicsWorld.setGravity(FP.fromFloat((-roll)/11),FP.fromFloat((-pitch)/11));
+           	physicsWorld.setGravity(FP.fromFloat((-roll)/10),FP.fromFloat((-pitch)/10));
             physicsWorld.updateWorld();
             
             /*
@@ -400,6 +419,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
         SensorManager sm=(SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
 		sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_GAME);
 
+		
         // create thread only; it's started in surfaceCreated()
         thread = new GameThread(holder, context, new Handler() {
             @Override

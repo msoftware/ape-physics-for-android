@@ -74,6 +74,11 @@ import android.graphics.Canvas;
 		
 			interval = new Interval(0,0);
 			
+//			x*=APEngine.scale;
+//			y*=APEngine.scale;
+//			
+//			mass*=APEngine.scale;
+			
 			curr = Vector.getNew(FP.fromFloat(x),FP.fromFloat(y));
 			prev = Vector.getNew(FP.fromFloat(x),FP.fromFloat(y));
 			temp = Vector.getNew(0,0);

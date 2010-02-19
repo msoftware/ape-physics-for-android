@@ -166,7 +166,7 @@ import android.graphics.Canvas;
 		@Override
 		public void resolve() {
 			
-			if (p1.fixed & p2.fixed) return;
+			if (p1.fixed && p2.fixed) return;
 			
 			p1.curr.supply_minus(p2.curr,delta);
 			deltaLength = p1.curr.distance(p2.curr);

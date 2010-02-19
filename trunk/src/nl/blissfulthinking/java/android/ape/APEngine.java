@@ -41,6 +41,8 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		public static final int SELECTIVE = 200;
 		public static final int SIMPLE = 300;
 		
+//		public static final float scale = 2.0f;
+		
 		public static final Vector force = Vector.getNew(0,0);
 		
 		public static AbstractParticle particles = null;
