@@ -102,12 +102,8 @@ public class PhysicsWorld {
 	
 	public void initWorld() {
 
-		//Remove all existing particles from the world
-		ArrayList<AbstractParticle> particles = (ArrayList<AbstractParticle>) APEngine.getAllParticles().clone();
-		for(AbstractParticle ap : particles) {
-			APEngine.removeParticle(ap);
-		}
 		
+		APEngine.particles = null;
 		//Remove all existing constraints from the world
 		ArrayList<AbstractConstraint> contraints = (ArrayList<AbstractConstraint>) APEngine.getAllConstraints().clone();
 		for(AbstractConstraint ac : contraints) {
@@ -168,52 +164,50 @@ public class PhysicsWorld {
 //			APEngine.addParticle(new CircleParticle(px2+size2,py2+size2,size2,false,3.0f+(i/10),0.4f,0.002f));
 //		}
 //		
-		int posx = 50;
-		int posy = 50;
-		int size = 40;
-		int halfsize = 20; 
-		int cornersize = 5;
-		boolean collidable = true;
-		CircleParticle a = new CircleParticle(posx-halfsize,posy-halfsize,cornersize,false,1.0f,0.05f,0.002f);
-		world.addParticle(a);
-		CircleParticle b = new CircleParticle(posx+halfsize,posy-halfsize,cornersize,false,1.0f,0.05f,0.002f);
-		world.addParticle(b);
-		CircleParticle c = new CircleParticle(posx+halfsize,posy+halfsize,cornersize,false,1.0f,0.05f,0.002f);
-		world.addParticle(c);
-		CircleParticle d = new CircleParticle(posx-halfsize,posy+halfsize,cornersize,false,1.0f,0.05f,0.002f);
-		world.addParticle(d);
-		
-		SpringConstraint ab = new SpringConstraint(a,b,1.0f);
-		ab.setCollidable(true);
-		ab.setCollisionRectWidth(FP.fromFloat(5.0f));
-		ab.setCollisionRectScale(FP.fromFloat(0.9f));
-		world.addConstraint(ab);
-		SpringConstraint bc = new SpringConstraint(b,c,1.0f);
-		bc.setCollidable(collidable);
-		bc.setCollisionRectWidth(FP.fromFloat(5.0f));
-		bc.setCollisionRectScale(FP.fromFloat(0.9f));
-		world.addConstraint(bc);
-		SpringConstraint cd = new SpringConstraint(c,d,1.0f);
-		cd.setCollidable(collidable);
-		cd.setCollisionRectWidth(FP.fromFloat(5.0f));
-		cd.setCollisionRectScale(FP.fromFloat(0.9f));
-		world.addConstraint(cd);
-		SpringConstraint da = new SpringConstraint(d,a,1.0f);
-		da.setCollidable(collidable);
-		da.setCollisionRectWidth(FP.fromFloat(5.0f));
-		da.setCollisionRectScale(FP.fromFloat(0.9f));
-		world.addConstraint(da);
-		
-		SpringConstraint ac = new SpringConstraint(a,c,1.0f);
-		ac.setCollidable(false);
-//		ab.setCollisionRectWidth(FP.fromFloat(4.0f));
+//		int posx = 50;
+//		int posy = 50;
+//		int size = 40;
+//		int halfsize = 20; 
+//		int cornersize = 5;
+//		boolean collidable = true;
+//		CircleParticle a = new CircleParticle(posx-halfsize,posy-halfsize,cornersize,false,1.0f,0.05f,0.002f);
+//		world.addParticle(a);
+//		CircleParticle b = new CircleParticle(posx+halfsize,posy-halfsize,cornersize,false,1.0f,0.05f,0.002f);
+//		world.addParticle(b);
+//		CircleParticle c = new CircleParticle(posx+halfsize,posy+halfsize,cornersize,false,1.0f,0.05f,0.002f);
+//		world.addParticle(c);
+//		CircleParticle d = new CircleParticle(posx-halfsize,posy+halfsize,cornersize,false,1.0f,0.05f,0.002f);
+//		world.addParticle(d);
+//		SpringConstraint ab = new SpringConstraint(a,b,1.0f);
+//		ab.setCollidable(true);
+//		ab.setCollisionRectWidth(FP.fromFloat(5.0f));
 //		ab.setCollisionRectScale(FP.fromFloat(0.9f));
-		world.addConstraint(ac);
-		SpringConstraint bd = new SpringConstraint(b,d,1.0f);
-		ac.setCollidable(false);
-//		ab.setCollisionRectWidth(FP.fromFloat(4.0f));
-//		ab.setCollisionRectScale(FP.fromFloat(0.9f));
-		world.addConstraint(bd);
+//		world.addConstraint(ab);
+//		SpringConstraint bc = new SpringConstraint(b,c,1.0f);
+//		bc.setCollidable(collidable);
+//		bc.setCollisionRectWidth(FP.fromFloat(5.0f));
+//		bc.setCollisionRectScale(FP.fromFloat(0.9f));
+//		world.addConstraint(bc);
+//		SpringConstraint cd = new SpringConstraint(c,d,1.0f);
+//		cd.setCollidable(collidable);
+//		cd.setCollisionRectWidth(FP.fromFloat(5.0f));
+//		cd.setCollisionRectScale(FP.fromFloat(0.9f));
+//		world.addConstraint(cd);
+//		SpringConstraint da = new SpringConstraint(d,a,1.0f);
+//		da.setCollidable(collidable);
+//		da.setCollisionRectWidth(FP.fromFloat(5.0f));
+//		da.setCollisionRectScale(FP.fromFloat(0.9f));
+//		world.addConstraint(da);
+//		SpringConstraint ac = new SpringConstraint(a,c,1.0f);
+//		ac.setCollidable(false);
+////		ab.setCollisionRectWidth(FP.fromFloat(4.0f));
+////		ab.setCollisionRectScale(FP.fromFloat(0.9f));
+//		world.addConstraint(ac);
+//		SpringConstraint bd = new SpringConstraint(b,d,1.0f);
+//		ac.setCollidable(false);
+////		ab.setCollisionRectWidth(FP.fromFloat(4.0f));
+////		ab.setCollisionRectScale(FP.fromFloat(0.9f));
+//		world.addConstraint(bd);
 		
 		// surfaces
 		int thikness = 200;
@@ -354,14 +348,19 @@ public class PhysicsWorld {
 		 public final void paintWorld(Canvas c) { 
 			 //MvdA TODO getting the particles from the public field may be faster
 			 //but I want multiple APEngines running parallel later on
-			ArrayList<AbstractParticle> particles = APEngine.getAllParticles();
-			int size = particles.size();
-			for(int i=0;i<size;i++) {
-				particles.get(i).drawParticle(c);
+//			ArrayList<AbstractParticle> particles = APEngine.getAllParticles();
+//			int size = particles.size();
+//			for(int i=0;i<size;i++) {
+//				particles.get(i).drawParticle(c);
+//			}
+			AbstractParticle currentParticle = APEngine.particles;
+			while(currentParticle != null) {
+				currentParticle.drawParticle(c);
+				currentParticle = currentParticle.next;
 			}
 			
 			ArrayList<AbstractConstraint> consraints = APEngine.getAllConstraints();
-			size = consraints.size();
+			int size = consraints.size();
 			for(int i=0;i<size;i++) {
 				consraints.get(i).drawConstraint(c);
 			}

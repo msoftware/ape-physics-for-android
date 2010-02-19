@@ -50,6 +50,8 @@ import android.graphics.Canvas;
 		
 		private final Vector temp;
 		
+		public AbstractParticle next = null;
+		
 		public int kfr;
 		public int mass;
 		public int invMass;
@@ -333,4 +335,15 @@ import android.graphics.Canvas;
 		}
 	
 		public abstract Interval getProjection(Vector axis);
+
+		public void remove(AbstractParticle p, AbstractParticle previous) {
+			if(p == this) {
+				if(next != null) {
+					previous.next = next;
+				}
+			}
+			else if(next != null){
+				next.remove(p,this);
+			}
+		}
 	}	
