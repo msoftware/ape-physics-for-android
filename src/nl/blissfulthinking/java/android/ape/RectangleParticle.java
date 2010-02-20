@@ -303,30 +303,27 @@ import android.graphics.Canvas;
 			cornerPositions[3] = cornerPosition4;
 		}
 		
-		private final void updateCornerParticles() {
-			//MvdA TODO reinstate this
-//			for (int i = 0; i < 4; i++) {
-//				cornerParticles[i].setpx(cornerPositions[i].x);
-//				cornerParticles[i].setpy(cornerPositions[i].y);
-//				getCornerParticles()[i].setpx(cornerPositions[i].x);
-//				getCornerParticles()[i].setpy( cornerPositions[i].y);
-//			}	
-//			cornerParticles[0].setpx(cornerPositions[0].x);
-//			cornerParticles[0].setpy(cornerPositions[0].y);
-//			cornerParticles[1].setpx(cornerPositions[1].x);
-//			cornerParticles[1].setpy(cornerPositions[1].y);
-//			cornerParticles[2].setpx(cornerPositions[2].x);
-//			cornerParticles[2].setpy(cornerPositions[2].y);
-//			cornerParticles[3].setpx(cornerPositions[3].x);
-//			cornerParticles[3].setpy(cornerPositions[3].y);
-		}
+//		private final void updateCornerParticles() {
+//			//MvdA TODO reinstate this
+////			for (int i = 0; i < 4; i++) {
+////				cornerParticles[i].setpx(cornerPositions[i].x);
+////				cornerParticles[i].setpy(cornerPositions[i].y);
+////				getCornerParticles()[i].setpx(cornerPositions[i].x);
+////				getCornerParticles()[i].setpy( cornerPositions[i].y);
+////			}	
+////			cornerParticles[0].setpx(cornerPositions[0].x);
+////			cornerParticles[0].setpy(cornerPositions[0].y);
+////			cornerParticles[1].setpx(cornerPositions[1].x);
+////			cornerParticles[1].setpy(cornerPositions[1].y);
+////			cornerParticles[2].setpx(cornerPositions[2].x);
+////			cornerParticles[2].setpy(cornerPositions[2].y);
+////			cornerParticles[3].setpx(cornerPositions[3].x);
+////			cornerParticles[3].setpy(cornerPositions[3].y);
+//		}
 				
 		private final void setAxes(int t) {
-			//MvdA TODO Would want to use fater sin and cos
-			int s = FP.fromDouble(Math.sin(FP.toFloat(t)));
-			int c = FP.fromDouble(Math.cos(FP.toFloat(t)));
-//			int s = FP.sin(t);
-//			int c = FP.cos(t);
+			int s = FP.sin(t);
+			int c = FP.cos(t);
 			
 			axes[0].x = c;
 			axes[0].y = s;

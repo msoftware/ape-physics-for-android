@@ -83,8 +83,7 @@ import android.graphics.Canvas;
 		 * center property.
 		 */			
 		public int getRotation() {
-			//MvdA TODO get a good Math.atan2 replacement
-			return FP.fromDouble(Math.atan2(FP.toFloat(delta.y),FP.toFloat(delta.x)));
+			return FP.atan2(delta.y,delta.x);
 		}
 		
 		/**
