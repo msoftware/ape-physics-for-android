@@ -1,4 +1,7 @@
 package nl.blissfulthinking.java.android.apeforandroid;
+
+
+
 /** 
 * 
 * 16:16 fixed point math routines, for IAppli/CLDC platform. 
@@ -129,7 +132,8 @@ public class FP {
      } 
 
      public static final int PI = 205887; 
-     public static final int PI_OVER_2 = PI / 2; 
+     public static final int PI_OVER_2 = PI/2; 
+     public static final int PI_OVER_4 = PI/4;
      public static final int E = 178145; 
      public static final int HALF = 2 << 15; 
       
@@ -141,29 +145,30 @@ public class FP {
       * Computes SIN(f), f is a fixed point number in radians. 0 <= f <= 2PI 
       */ 
      public static final int sin(int f) { 
+    	  return FP.fromDouble(Math.sin(FP.toFloat(f)));
           // If in range -pi/4 to pi/4: nothing needs to be done. 
           // otherwise, we need to get f into that range and account for 
           // sign change. 
-
-          int sign = 1; 
-          if ((f > PI_OVER_2) && (f <= PI)) { 
-               f = PI - f; 
-          } else if ((f > PI) && (f <= (PI + PI_OVER_2))) { 
-               f = f - PI; 
-               sign = -1; 
-          } else if (f > (PI + PI_OVER_2)) { 
-               f = (PI << 1) - f; 
-               sign = -1; 
-          } 
-
-          int sqr = mul(f, f); 
-          int result = SK1; 
-          result = mul(result, sqr); 
-          result -= SK2; 
-          result = mul(result, sqr); 
-          result += (1 << 16); 
-          result = mul(result, f); 
-          return sign * result; 
+//
+//          int sign = 1; 
+//          if ((f > PI_OVER_2) && (f <= PI)) { 
+//               f = PI - f; 
+//          } else if ((f > PI) && (f <= (PI + PI_OVER_2))) { 
+//               f = f - PI; 
+//               sign = -1; 
+//          } else if (f > (PI + PI_OVER_2)) { 
+//               f = (PI << 1) - f; 
+//               sign = -1; 
+//          } 
+//
+//          int sqr = mul(f, f); 
+//          int result = SK1; 
+//          result = mul(result, sqr); 
+//          result -= SK2; 
+//          result = mul(result, sqr); 
+//          result += (1 << 16); 
+//          result = mul(result, f); 
+//          return sign * result; 
      } 
 
      static final int CK1 = 2328; 
@@ -173,25 +178,25 @@ public class FP {
       * Computes cos(f), f is a fixed point number in radians. 0 <= f <= PI/2 
       */ 
      public static final int cos(int f) { 
-
-          int sign = 1; 
-          if ((f > PI_OVER_2) && (f <= PI)) { 
-               f = PI - f; 
-               sign = -1; 
-          } else if ((f > PI_OVER_2) && (f <= (PI + PI_OVER_2))) { 
-               f = f - PI; 
-               sign = -1; 
-          } else if (f > (PI + PI_OVER_2)) { 
-               f = (PI << 1) - f; 
-          } 
-
-          int sqr = mul(f, f); 
-          int result = CK1; 
-          result = mul(result, sqr); 
-          result -= CK2; 
-          result = mul(result, sqr); 
-          result += (1 << 16); 
-          return result * sign; 
+    	  return FP.fromDouble(Math.cos(FP.toFloat(f)));
+//          int sign = 1; 
+//          if ((f > PI_OVER_2) && (f <= PI)) { 
+//               f = PI - f; 
+//               sign = -1; 
+//          } else if ((f > PI_OVER_2) && (f <= (PI + PI_OVER_2))) { 
+//               f = f - PI; 
+//               sign = -1; 
+//          } else if (f > (PI + PI_OVER_2)) { 
+//               f = (PI << 1) - f; 
+//          } 
+//
+//          int sqr = mul(f, f); 
+//          int result = CK1; 
+//          result = mul(result, sqr); 
+//          result -= CK2; 
+//          result = mul(result, sqr); 
+//          result += (1 << 16); 
+//          return result * sign; 
      } 
 
      /** 
@@ -319,5 +324,129 @@ public class FP {
           } 
           return g + lnscale[shift]; 
      }
+     
+     // The x,y point where two lines intersect
+     public static int xIntersect;
+     public static int yIntersect;
+
+     /**
+      * Does line segment A intersection line segment B?
+      *
+      * Assumes 16 bit fixed point numbers with 16 bits of fraction.
+      *
+      * For debugging, side effect xint, yint, the intersection point.
+      *
+      */
+     public static boolean intersects (int ax0, int ay0, int ax1, int ay1,
+ 			int bx0, int by0, int bx1, int by1) {
+ 	
+ 	ax0 <<= 16;
+ 	ay0 <<= 16;
+ 	ax1 <<= 16;
+ 	ay1 <<= 16;
+ 	
+ 	bx0 <<= 16;
+ 	by0 <<= 16;
+ 	bx1 <<= 16;
+ 	by1 <<= 16;
+ 	
+ 	int adx = (ax1 - ax0);
+ 	int ady = (ay1 - ay0);
+ 	int bdx = (bx1 - bx0);
+ 	int bdy = (by1 - by0);
+
+ 	int xma;
+ 	int xba;
+
+ 	int xmb;
+ 	int xbb;	
+ 	int TWO = (2 << 16);
+
+ 	if ((adx == 0) && (bdx == 0)) { // both vertical lines
+ 	    int dist = Math.abs(div((ax0+ax1)-(bx0+bx1), TWO));
+ 	    return (dist == 0);
+ 	} else if (adx == 0) { // A  vertical
+ 	    int xa = div((ax0 + ax1), TWO);
+ 	    xmb = div(bdy,bdx);           // slope segment B
+ 	    xbb = by0 - mul(bx0, xmb); // y intercept of segment B
+ 	    xIntersect = xa;
+ 	    yIntersect = (mul(xmb,xIntersect)) + xbb;
+ 	} else if ( bdx == 0) { // B vertical
+ 	    int xb = div((bx0+bx1), TWO);
+ 	    xma = div(ady,adx);           // slope segment A
+ 	    xba = ay0 - (mul(ax0,xma)); // y intercept of segment A
+ 	    xIntersect = xb;
+ 	    yIntersect = (mul(xma,xIntersect)) + xba;
+ 	} else {
+ 	     xma = div(ady,adx);           // slope segment A
+ 	     xba = ay0 - (mul(ax0, xma)); // y intercept of segment A
+
+ 	     xmb = div(bdy,bdx);           // slope segment B
+ 	     xbb = by0 - (mul(bx0,xmb)); // y intercept of segment B
+ 	
+ 	     // parallel lines? 
+ 	     if (xma == xmb) {
+ 		 // Need trig functions
+ 		 int dist = Math.abs(mul((xba-xbb),
+ 					   (cos(atan(div((xma+xmb), TWO))))));
+ 		 if (dist < (1<<16) ) {
+ 		     return true;
+ 		 } else {
+ 		     return false;
+ 		 }
+ 	     } else {
+ 		 // Calculate points of intersection
+ 		 // At the intersection of line segment A and B, XA=XB=XINT and YA=YB=YINT
+ 		 if ((xma-xmb) == 0) {
+ 		     return false;
+ 		 }
+ 		 xIntersect = div((xbb-xba),(xma-xmb));
+ 		 yIntersect = (mul(xma,xIntersect)) + xba;
+ 	     }
+ 	}
+
+ 	// After the point or points of intersection are calculated, each
+ 	// solution must be checked to ensure that the point of intersection lies
+ 	// on line segment A and B.
+ 	
+ 	int minxa = Math.min(ax0, ax1);
+ 	int maxxa = Math.max(ax0, ax1);
+
+ 	int minya = Math.min(ay0, ay1);
+ 	int maxya = Math.max(ay0, ay1);
+
+ 	int minxb = Math.min(bx0, bx1);
+ 	int maxxb = Math.max(bx0, bx1);
+
+ 	int minyb = Math.min(by0, by1);
+ 	int maxyb = Math.max(by0, by1);
+
+ 	return ((xIntersect >= minxa) && (xIntersect <= maxxa) && (yIntersect >= minya) && (yIntersect <= maxya) 
+ 		&& 
+ 		(xIntersect >= minxb) && (xIntersect <= maxxb) && (yIntersect >= minyb) && (yIntersect <= maxyb));
+     }
+     
+     public static int atan2(int y, int x) {
+    	 return FP.fromDouble(Math.atan2(FP.toFloat(y),FP.toFloat(x)));
+//		 int r;
+//		 int angle;
+//	     int coeff_1 = PI_OVER_4;
+//	     int coeff_2 = FP.mul(3, coeff_1);
+//	     int abs_y = Math.abs(y)+1;      // kludge to prevent 0/0 condition
+//		 if (x>=0)
+//		 {
+//		    r = FP.div(x - abs_y, x + abs_y);
+//		    angle = coeff_1 - FP.mul(coeff_1, r);
+//		 }
+//		 else
+//		 {
+//		    r = FP.div(x + abs_y, abs_y - x);
+//		    angle = coeff_2 - FP.mul(coeff_1, r);
+//		 }
+//		 if (y < 0)
+//		 	return(-angle);     // negate if in quad III or IV
+//		 else
+//			return(angle);
+	  }
      
 } 
