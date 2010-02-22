@@ -34,6 +34,7 @@ import android.graphics.Canvas;
 	 */ 
 	public class RectangleParticle extends AbstractParticle {
 		
+		public final int[] currTemp = new int[2];
 		public final Vector[] cornerPositions = new Vector[4];
 		
 		//MvdA TODO reestablish cornerParticle functionality
@@ -277,7 +278,9 @@ import android.graphics.Canvas;
 				FP.mul(extents[0],FP.abs(Vector.dot(axis,axes0)))+
 				FP.mul(extents[1],FP.abs(Vector.dot(axis,axes1)));
 			
-			int c = Vector.dot(new int[]{curr.x,curr.y},axis);
+			currTemp[0] = curr.x;
+			currTemp[1] = curr.y;
+			int c = Vector.dot(currTemp,axis);
 			
 			interval.min = c - radius;
 			interval.max = c + radius;

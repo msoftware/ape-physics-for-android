@@ -33,6 +33,7 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		public static final Vector collisionNormal = Vector.getNew(0,0);
 		public static final Vector mult_temp = Vector.getNew(0,0);
 		public static final Vector d = Vector.getNew(0,0);
+		public static final int[] dTemp = new int[2];
 		public static final Vector vertex = Vector.getNew(0,0);
 		
 		/**
@@ -247,14 +248,18 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 			vertex.setTo(r.curr.x, r.curr.y);
 	
 //			for (int i = 0; i < 2; i++) {
-				int dist = Vector.dot(new int[] {d.x,d.y},r.axes0);
+				dTemp[0] = d.x;
+				dTemp[1] = d.y;
+				int dist = Vector.dot(dTemp,r.axes0);
 	
 				if (dist >= 0) dist = r.extents[0];
 				else if (dist < 0) dist = -r.extents[0];
 	
 				vertex.plusEquals(Vector.supply_mult(r.axes0,dist, mult_temp));	
 				
-				dist = Vector.dot(new int[] {d.x,d.y},r.axes1);
+				dTemp[0] = d.x;
+				dTemp[1] = d.y;
+				dist = Vector.dot(dTemp,r.axes1);
 				
 				if (dist >= 0) dist = r.extents[1];
 				else if (dist < 0) dist = -r.extents[1];
