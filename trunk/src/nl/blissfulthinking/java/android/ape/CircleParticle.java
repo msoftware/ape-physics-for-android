@@ -31,12 +31,11 @@ import android.graphics.Canvas;
 
 
 
-
 	/**	
 	 * A circle shaped particle. 	 
 	 */
 	public class CircleParticle extends AbstractParticle {
-	
+		public final int[] currTemp = new int[2];
 		public int radius;
 	
 		
@@ -88,7 +87,9 @@ import android.graphics.Canvas;
 		// TODO REVIEW FOR ANY POSSIBILITY OF PRECOMPUTING
 
 		public final Interval getProjection(int[] axis) {
-			int c = Vector.dot(new int[] {curr.x,curr.y},axis);
+			currTemp[0] = curr.x;
+			currTemp[1] = curr.y;
+			int c = Vector.dot(currTemp,axis);
 			interval.min = c - radius;
 			interval.max = c + radius;
 			return interval;
