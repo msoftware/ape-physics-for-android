@@ -3,7 +3,6 @@ package nl.blissfulthinking.java.android.apeforandroid;
 import nl.blissfulthinking.java.android.apeforandroid.GameView.GameThread;
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -114,7 +113,13 @@ public class AndroidAPE extends Activity {
 
         // set up a new game
         mGameThread.setState(GameThread.STATE_READY);
-        Log.w(this.getClass().getName(), "SIS is null");
+//        Log.w(this.getClass().getName(), "SIS is null");
+        
+    	Paints p = new Paints();
+    	p.init();
+        
+
+//    	
     }
 
     /**

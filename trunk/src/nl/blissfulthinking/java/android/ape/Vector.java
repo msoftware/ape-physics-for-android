@@ -99,6 +99,14 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 //			return x * v.x + y * v.y;
 			return FP.mul(x,v.x)+FP.mul(y,v.y);
 		}
+		public static final int dot(int[] v0, int[] v1) {
+//			return x * v.x + y * v.y;
+			return FP.mul(v0[0],v1[0])+FP.mul(v0[1],v1[1]);
+		}
+		public final int dot(int[] v1) {
+//			return x * v.x + y * v.y;
+			return FP.mul(x,v1[0])+FP.mul(y,v1[1]);
+		}
 		
 		public final int cross(Vector v) {
 //			return x * v.y - y * v.x;
@@ -161,6 +169,12 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 			toReturn.setTo(FP.mul(x,s),FP.mul(y,s));
 			return toReturn;
 		}
+		public static final Vector supply_mult(int[] v, int s, Vector toReturn) {
+			toReturn.setTo(FP.mul(v[0],s),FP.mul(v[1],s));
+			return toReturn;
+		}
+		
+	
 	
 //		//pooling_draw
 //		public final Vector pool_mult(int s) {

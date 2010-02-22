@@ -84,15 +84,16 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		private static final void testOBBvsOBB(RectangleParticle ra, RectangleParticle rb) {
 			int collisionDepth = FP.MAX_VALUE;
 			
-			for (int i = 0; i < 2; i++) {
+//			for (int i = 0; i < 2; i++) {
 		
-				final Vector axisA = ra.axes[i];
+//				final Vector axisA = ra.axes[i];
+				final int[] axisA = ra.axes0;
 				int depthA = testIntervals(ra.getProjection(axisA), rb.getProjection(axisA));
 			    if (depthA == 0) {
 			    	return;
 			    }
 				
-			    final Vector axisB = rb.axes[i];
+			    final int[] axisB = rb.axes0;
 			    int depthB = testIntervals(ra.getProjection(axisB), rb.getProjection(axisB));
 			    if (depthB == 0) {
 			    	return;
@@ -103,15 +104,42 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 			    
 			    if (absA < FP.abs(collisionDepth) || absB < FP.abs(collisionDepth)) {
 			    	if(absA < absB) {
-			    		collisionNormal.setTo(axisA.x,axisA.y);
+			    		collisionNormal.setTo(axisA[0],axisA[1]);
 			    		collisionDepth = depthA;
 			    	}
 			    	else {
-			    		collisionNormal.setTo(axisB.x,axisB.y);
+			    		collisionNormal.setTo(axisB[0],axisB[1]);
 			    		collisionDepth = depthB;
 			    	}
 			    }
-			}
+			    
+			    //REPEAT
+				final int[] axisC = ra.axes1;
+				int depthC = testIntervals(ra.getProjection(axisC), rb.getProjection(axisC));
+			    if (depthC == 0) {
+			    	return;
+			    }
+				
+			    final int[] axisD = rb.axes0;
+			    int depthD = testIntervals(ra.getProjection(axisD), rb.getProjection(axisD));
+			    if (depthD == 0) {
+			    	return;
+			    }
+			    
+			    int absC = FP.abs(depthC);
+			    int absD = FP.abs(depthD);
+			    
+			    if (absC < FP.abs(collisionDepth) || absD < FP.abs(collisionDepth)) {
+			    	if(absC < absD) {
+			    		collisionNormal.setTo(axisC[0],axisC[1]);
+			    		collisionDepth = depthC;
+			    	}
+			    	else {
+			    		collisionNormal.setTo(axisD[0],axisD[1]);
+			    		collisionDepth = depthD;
+			    	}
+			    }
+//			}
 			CollisionResolver.resolveParticleParticle(ra, rb, collisionNormal, collisionDepth);
 		}		
 	
@@ -126,26 +154,27 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 			int depth1;
 			int depth2;
 			
-			Vector boxAxis = ra.axes[0];
-			int depth = testIntervals(ra.getProjection(boxAxis), ca.getProjection(boxAxis));
+//			Vector boxAxis = ra.axes[0];
+			final int[] boxAxis0 = ra.axes0;
+			int depth = testIntervals(ra.getProjection(boxAxis0), ca.getProjection(boxAxis0));
 			if (depth == 0) {
 				return;
 			}
 	
 			if (FP.abs(depth) < FP.abs(collisionDepth)) {
-				collisionNormal.setTo(boxAxis.x,boxAxis.y);
+				collisionNormal.setTo(boxAxis0[0],boxAxis0[1]);
 				collisionDepth = depth;
 			}
 			depth1 = depth;
 				
-			boxAxis = ra.axes[1];
-			depth = testIntervals(ra.getProjection(boxAxis), ca.getProjection(boxAxis));
+			final int[] boxAxis1 = ra.axes1;
+			depth = testIntervals(ra.getProjection(boxAxis1), ca.getProjection(boxAxis1));
 			if (depth == 0) {
 				return;
 			}
 	
 			if (FP.abs(depth) < FP.abs(collisionDepth)) {
-				collisionNormal.setTo(boxAxis.x,boxAxis.y);
+				collisionNormal.setTo(boxAxis1[0],boxAxis1[1]);
 				collisionDepth = depth;
 			}
 			depth2 = depth;
@@ -217,14 +246,21 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 			
 			vertex.setTo(r.curr.x, r.curr.y);
 	
-			for (int i = 0; i < 2; i++) {
-				int dist = d.dot(r.axes[i]);
+//			for (int i = 0; i < 2; i++) {
+				int dist = Vector.dot(new int[] {d.x,d.y},r.axes0);
 	
-				if (dist >= 0) dist = r.extents[i];
-				else if (dist < 0) dist = -r.extents[i];
+				if (dist >= 0) dist = r.extents[0];
+				else if (dist < 0) dist = -r.extents[0];
 	
-				vertex.plusEquals(r.axes[i].supply_mult(dist, mult_temp));	
-			}
+				vertex.plusEquals(Vector.supply_mult(r.axes0,dist, mult_temp));	
+				
+				dist = Vector.dot(new int[] {d.x,d.y},r.axes1);
+				
+				if (dist >= 0) dist = r.extents[1];
+				else if (dist < 0) dist = -r.extents[1];
+	
+				vertex.plusEquals(Vector.supply_mult(r.axes1,dist, mult_temp));	
+//			}
 			return vertex;
 		}
 	}

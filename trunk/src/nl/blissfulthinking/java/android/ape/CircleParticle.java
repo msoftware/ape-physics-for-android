@@ -85,6 +85,14 @@ import android.graphics.Canvas;
 			interval.max = c + radius;
 			return interval;
 		}
+		// TODO REVIEW FOR ANY POSSIBILITY OF PRECOMPUTING
+
+		public final Interval getProjection(int[] axis) {
+			int c = Vector.dot(new int[] {curr.x,curr.y},axis);
+			interval.min = c - radius;
+			interval.max = c + radius;
+			return interval;
+		}
 		
 		public final Interval getIntervalX() {
 			interval.min = curr.x - radius;

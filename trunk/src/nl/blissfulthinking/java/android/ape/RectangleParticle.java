@@ -40,8 +40,11 @@ import android.graphics.Canvas;
 //		public final AbstractParticle[] cornerParticles = new AbstractParticle[4];
 		
 		public final int[] extents = new int[2];
-		
-		public final Vector[] axes = new Vector[2];
+//		
+//		public final Vector[] axes = new Vector[2];
+//		
+		public final int[] axes0 = new int[2];
+		public final int[] axes1 = new int[2];
 		private int rotation;
 
 		private boolean show;
@@ -84,8 +87,8 @@ import android.graphics.Canvas;
 			extents[0] = FP.div(FP.fromFloat(width),FP.TWO);
 			extents[1] = FP.div(FP.fromFloat(height),FP.TWO);
 			
-			axes[0] = Vector.getNew(0,0);
-			axes[1] = Vector.getNew(0,0);
+//			axes[0] = Vector.getNew(0,0);
+//			axes[1] = Vector.getNew(0,0);
 			setRotation(FP.fromFloat(rotation));
 			
 			this.show  = show;
@@ -257,10 +260,24 @@ import android.graphics.Canvas;
 		public final Interval getProjection(Vector axis) {
 			
 			int radius =
-				FP.mul(extents[0],FP.abs(axis.dot(axes[0])))+
-				FP.mul(extents[1],FP.abs(axis.dot(axes[1])));
+				FP.mul(extents[0],FP.abs(axis.dot(axes0)))+
+				FP.mul(extents[1],FP.abs(axis.dot(axes1)));
 			
 			int c = curr.dot(axis);
+			
+			interval.min = c - radius;
+			interval.max = c + radius;
+			return interval;
+		}
+		// TODO REVIEW FOR ANY POSSIBILITY OF PRECOMPUTING
+	
+		public final Interval getProjection(int[] axis) {
+			
+			int radius =
+				FP.mul(extents[0],FP.abs(Vector.dot(axis,axes0)))+
+				FP.mul(extents[1],FP.abs(Vector.dot(axis,axes1)));
+			
+			int c = Vector.dot(new int[]{curr.x,curr.y},axis);
 			
 			interval.min = c - radius;
 			interval.max = c + radius;
@@ -269,10 +286,10 @@ import android.graphics.Canvas;
 
 		public final void updateCornerPositions() {
 		
-			int ae0_x = FP.mul(axes[0].x,extents[0]);
-			int ae0_y = FP.mul(axes[0].y,extents[0]);
-			int ae1_x = FP.mul(axes[1].x,extents[1]);
-			int ae1_y = FP.mul(axes[1].y,extents[1]);
+			int ae0_x = FP.mul(axes0[0],extents[0]);
+			int ae0_y = FP.mul(axes0[1],extents[0]);
+			int ae1_x = FP.mul(axes1[0],extents[1]);
+			int ae1_y = FP.mul(axes1[1],extents[1]);
 			
 			
 			int emx = ae0_x - ae1_x;
@@ -325,9 +342,9 @@ import android.graphics.Canvas;
 			int s = FP.sin(t);
 			int c = FP.cos(t);
 			
-			axes[0].x = c;
-			axes[0].y = s;
-			axes[1].x = -s;
-			axes[1].y = c;
+			axes0[0] = c;
+			axes0[1] = s;
+			axes1[0] = -s;
+			axes1[1] = c;
 		}
 	}
