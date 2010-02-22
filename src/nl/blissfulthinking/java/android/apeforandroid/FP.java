@@ -1,5 +1,8 @@
 package nl.blissfulthinking.java.android.apeforandroid;
 
+import android.util.Log;
+
+
 
 
 /** 
@@ -177,7 +180,10 @@ public class FP {
      /** 
       * Computes cos(f), f is a fixed point number in radians. 0 <= f <= PI/2 
       */ 
-     public static final int cos(int f) { 
+     public static final int cos(int f) {
+    	 if(f <= 0 || f >= PI_OVER_2) {
+//    		 Log.i("Value check","INVALID VALUE FOR COS: "+FP.toFloat(f));
+    	 }
     	  return FP.fromDouble(Math.cos(FP.toFloat(f)));
 //          int sign = 1; 
 //          if ((f > PI_OVER_2) && (f <= PI)) { 

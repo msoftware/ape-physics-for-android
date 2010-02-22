@@ -2,6 +2,7 @@ package nl.blissfulthinking.java.android.apeforandroid;
 
 import nl.blissfulthinking.java.android.ape.APEngine;
 import nl.blissfulthinking.java.android.ape.CircleParticle;
+import nl.blissfulthinking.java.android.ape.Vector;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.hardware.Sensor;
@@ -70,6 +71,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
         private boolean mRun = false;
         /** Handle to the surface manager object we interact with */
         private SurfaceHolder mSurfaceHolder;
+		private int type1won;
+		private int type2won;
 
         public GameThread(SurfaceHolder surfaceHolder, Context context,
                 Handler handler) {
@@ -91,9 +94,6 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
         public void doStart() {
             synchronized (mSurfaceHolder) {
             	// Initialize game here!
-            	Paints p = new Paints();
-            	p.init();
-            	
             	physicsWorld.initWorld();
             	
 //                x = 10;
@@ -121,17 +121,61 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
                 try {
                     c = mSurfaceHolder.lockCanvas(null);
                     synchronized (mSurfaceHolder) {
-//                    	Log.i("state","state="+mMode);
-                    	if(mMode == STATE_READY) {
-                    		drawReadyScreen(c);
-                    	}
-                        if (mMode == STATE_RUNNING) {
+//                    	Log.i("state "+System.currentTimeMillis(),"state="+mMode);
+//                    	if(mMode == STATE_READY) {
+//                    		drawReadyScreen(c);
+//                    	}
+                    	if (mMode == STATE_RUNNING) {
                         	updateGame();
                         	doDraw(c);
+               
+                    		
+                    		//TEST AREA
+//                                int cycles = 100000;
+//                                
+//                                Vector v = Vector.getNew(0,0);
+//                                int[] vector = new int[2];
+//
+//                                long now1 = System.currentTimeMillis();
+//                                int i = 0;
+//                                while(i<cycles) {
+//                                	  v.x++;
+//                                	
+////                                    if(circleParticle instanceof CircleParticle) {
+//                                        i++;
+////                                    }
+//                                }
+//                                long timetaken1 = (System.currentTimeMillis()-now1);
+//
+//                                long now2 = System.currentTimeMillis();
+//                                int j = 0;
+//                                while(j<cycles) {
+//                                	  vector[1]++;
+////                                    if(circleParticle.type == AbstractParticle.TYPE_CIRCLE) {
+//                                        j++;
+////                                    }
+//                                }
+//                                long timetaken2 = (System.currentTimeMillis()-now2);
+//
+//                                if(timetaken1 < timetaken2) {
+//                                    type1won++;
+//                                }
+//                                else if(timetaken2 < timetaken1){
+//                                    type2won++;
+//                                }
+//                                
+//                                i+=j;
+//                                
+//                                Vector.release(v);
+//
+//                                Log.d("access test time difference: "+(timetaken1-timetaken2),"1 favoured : "+((float)type1won/(type1won+type2won))); 
+//                           //END TEST AREA 	
+                            	
+                            
                     	}
-                    	else if(mMode == STATE_READY) {
-                    		drawReadyScreen(c);
-                    	}
+                    	else if(mMode == STATE_PAUSE){
+                    		drawPauseScreen(c);
+                    	}			
                     	else {
                     		drawReadyScreen(c);
                     	}
@@ -147,7 +191,12 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
             }
         }
 
-        /**
+        private void drawPauseScreen(Canvas c) {
+           	c.drawARGB(15, 0, 0, 0);
+			c.drawText("PAUSED", (GameView.width/2)-10, 10, Paints.textpaint);
+		}
+
+		/**
          * Used to signal the thread whether it should be running or not.
          * Passing true allows the thread to run; passing false will shut it
          * down if it's already running. Calling start() after this was most
@@ -160,8 +209,18 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
         }
 
         public void drawReadyScreen(Canvas c) {
-			c.drawText("ape-for-android alpha testbed", 20, 25, Paints.textpaint);
-			c.drawCircle(50,50,40,Paints.rectanglePaint);
+        	// empty canvas
+        	c.drawARGB(255, 0, 0, 0);
+        	
+    		c.drawRect(10,10,GameView.width-10,GameView.height-10,Paints.circlePaint);
+//			c.drawRect(12,12,GameView.width-12,GameView.height-12,Paints.rectanglePaint);
+        	
+        	int l0 = 5;
+        	int l1 = 15;
+			c.drawText("ape-for-android alpha testbed", 15, l0+l1, Paints.textpaint);
+			c.drawText("press the menu button to start the demo", 15, l0+l1, Paints.textpaint);
+			c.drawText("have fun", 15, l0+l1, Paints.textpaint);
+	
 		}
 
 		/**
@@ -298,7 +357,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
 //         	}
         	
 //        	APEngine.addParticle(new RectangleParticle(fingerX,fingerY,25,25,0.0f,false,3.0f,0.001f,0.01f,true));
-			APEngine.addParticle(new CircleParticle(fingerX,fingerY,20,false,0.5f,0.1f,0.02f));
+			APEngine.addParticle(new CircleParticle(fingerX,fingerY,30,false,2.5f,0.1f,0.02f));
          
 //			physicsWorld.setGravity(xgrav,ygrav);
 //         	APEngine.addForce(FP.fromInt(xgrav),FP.fromInt(ygrav));
@@ -393,6 +452,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
 //            	x = 0;
 //            else if (x >= mCanvasWidth - mSnowflake.getWidth())
 //            	x = mCanvasWidth - mSnowflake.getWidth();
+            
+ 
         }
     }
 
