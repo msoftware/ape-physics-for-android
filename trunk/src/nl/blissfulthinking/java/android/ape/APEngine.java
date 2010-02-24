@@ -43,11 +43,11 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		
 //		public static final float scale = 2.0f;
 		
-		public static final Vector force = Vector.getNew(0,0);
+		public static final int[] force = new int[2];
 		
 		public static AbstractParticle particles = null;
 		
-		public static final Vector masslessForce = Vector.getNew(0,0);
+		public static final int[] masslessForce = new int[2];
 			
 		public static int timeStep;
 //		private static final ArrayList<AbstractParticle> particles = new ArrayList<AbstractParticle>();
@@ -59,7 +59,9 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		public static int collisionResponseMode = STANDARD;
 		
 		public final void setMasslessForce(int x, int y) {
-			masslessForce.setTo(x,y);
+//			masslessForce.setTo(x,y);
+			masslessForce[0] = x;
+			masslessForce[1] = y;
 		}
 		
 		/**
@@ -139,8 +141,10 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		 * 
 		 * @param f A Vector represeting the force added.
 		 */ 
-		public static final void addForce(int vx, int vy) {
-			force.plusEquals(vx,vy);
+		public static final void addForce(int x, int y) {
+//			force.plusEquals(vx,vy);
+			force[0] = force[0] + x;
+			force[1] = force[1] + y;
 		}
 		
 		/**
@@ -152,9 +156,11 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		 * 
 		 * @param f A Vector represeting the force added.
 		 */ 	
-		public final void addMasslessForce(int vx, int vy) {
-			masslessForce.plusEquals(vx,vy);
-		}
+//		public final void addMasslessForce(int x, int y) {
+////			masslessForce.plusEquals(vx,vy);
+//			masslessForce[0] = masslessForce[0] + x;
+//			masslessForce[1] = masslessForce[1] + y;
+//		}
 		
 		/**
 		 * Adds a particle to the engine.

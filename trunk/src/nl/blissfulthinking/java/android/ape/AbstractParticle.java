@@ -38,17 +38,20 @@ import android.graphics.Canvas;
 	public abstract class AbstractParticle {
 		
 		
-		public final Vector curr;
+//		public final Vector curr;
+		public final int[] curr = new int[2];
 		
-		public final Vector prev;
+//		public final Vector prev;
+		public final int[] prev = new int[2];
+		
 		
 		public boolean isColliding;
 		
 		public final Interval interval;
 
-		private final Vector forces;
+		private final int[] forces = new int[2];
 		
-		private final Vector temp;
+		private final int[] temp = new int[2];
 		
 		public AbstractParticle next = null;
 		
@@ -61,8 +64,8 @@ import android.graphics.Canvas;
 		public boolean collidable;
 		private final Collision collision;
 		
-		private static final Vector nv = Vector.getNew(0,0);
-		private static final Vector vel = Vector.getNew(0,0);
+		private static final int[] nv = new int[2];
+		private static final int[] vel = new int[2];
 		
 		public AbstractParticle (
 				float x, 
@@ -79,12 +82,16 @@ import android.graphics.Canvas;
 //			
 //			mass*=APEngine.scale;
 			
-			curr = Vector.getNew(FP.fromFloat(x),FP.fromFloat(y));
-			prev = Vector.getNew(FP.fromFloat(x),FP.fromFloat(y));
-			temp = Vector.getNew(0,0);
+			curr[0] = FP.fromFloat(x);
+			curr[1] = FP.fromFloat(y);
+//			curr = Vector.getNew(FP.fromFloat(x),FP.fromFloat(y));
+			prev[0] = FP.fromFloat(x);
+			prev[1] = FP.fromFloat(y);
+//			prev = Vector.getNew(FP.fromFloat(x),FP.fromFloat(y));
+//			temp = Vector.getNew(0,0);
 			
-			forces = Vector.getNew(0,0);
-			collision = new Collision(Vector.getNew(0,0), Vector.getNew(0,0));
+//			forces = Vector.getNew(0,0);
+			collision = new Collision(new int[2], new int[2]);
 			isColliding = false;
 			
 			setMass(FP.fromFloat(mass));
@@ -204,9 +211,16 @@ import android.graphics.Canvas;
 		 * its position will behave as if it's attached there by a 0 length sprint constraint. 
 		 * </p>
 		 */
-		public final void setPosition(Vector p) {	
-			curr.setTo(p.x,p.y);
-			prev.setTo(p.x,p.y);
+//		public final void setPosition(Vector p) {	
+//			curr.setTo(p.x,p.y);
+//			prev.setTo(p.x,p.y);
+//		}
+		
+		public final void setPostion(int x,int y) {
+			curr[0] = x;
+			curr[1] = y;
+			prev[0] = x;
+			prev[1] = y;
 		}
 
 	
@@ -214,8 +228,10 @@ import android.graphics.Canvas;
 		 * The x position of this particle
 		 */
 		public final void setpx(int x) {
-			curr.x = x;
-			prev.x = x;	
+			curr[0] = x;
+			prev[0] = x;
+//			curr.x = x;
+//			prev.x = x;	
 		}
 
 
@@ -223,8 +239,10 @@ import android.graphics.Canvas;
 		 * The y position of this particle
 		 */
 		public final void setpy(int y) {
-			curr.y = y;
-			prev.y = y;	
+			curr[1] = y;
+			prev[1] = y;
+//			curr.y = y;
+//			prev.y = y;	
 		}
 
 
@@ -239,12 +257,14 @@ import android.graphics.Canvas;
 //			return curr.minus(prev);
 //		}
 		
-		protected void supply_getVelocity(Vector result) {
-			curr.supply_minus(prev,result);
+		protected void supply_getVelocity(int[] result) {
+			Vector.supply_minus(curr,prev,result);
 		}
 		
-		protected final void setVelocity(Vector v) {
-			prev.setTo(curr.x - v.x, curr.y - v.y);    	
+		protected final void setVelocity(int[] v) {
+			prev[0] = curr[0] - v[0];
+			prev[1] = curr[1] - v[1];
+//			prev.setTo(curr.x - v.x, curr.y - v.y);    	
 		}
 		
 //		public final void pool_setVelocity(Vector v) {
@@ -271,8 +291,10 @@ import android.graphics.Canvas;
 		 * 
 		 * @param f A Vector represeting the force added.
 		 */ 
-		public final void addForce(Vector f) {
-			forces.plusEquals(f.multEquals(invMass));
+		public final void addForce(int[] force) {
+//			forces.plusEquals(f.multEquals(invMass));
+			Vector.supply_mult(force, invMass, force);
+			Vector.supply_plus(forces,force,forces);
 		}
 		
 		
@@ -284,8 +306,9 @@ import android.graphics.Canvas;
 		 *
 		 * @param f A Vector represeting the force added.
 		 */ 	
-		public final void addMasslessForce(Vector f) {
-			forces.plusEquals(f);
+		public final void addMasslessForce(int[] force) {
+//			forces.plusEquals(f);
+			Vector.supply_plus(forces,force,forces);
 		}
 		
 		public void update(int dt2) {
@@ -296,32 +319,46 @@ import android.graphics.Canvas;
 			addMasslessForce(APEngine.masslessForce);
 	
 			// integrate
-			temp.setTo(curr.x,curr.y);
-			
+			Vector.setTo(curr,temp);
+//			temp.setTo(curr.x,curr.y);
+//			
 			supply_getVelocity(nv);
-			nv.supply_plus(forces.multEquals(dt2),nv);
+//			nv.supply_plus(forces.multEquals(dt2),nv);
+//			forces.multEquals(dt2);
+			Vector.supply_mult(forces, dt2, forces);
+			Vector.supply_plus(nv,forces,nv);
 			
-			curr.plusEquals(nv.multEquals(APEngine.damping));
-			prev.setTo(temp.x,temp.y);
+//			curr.plusEquals(nv.multEquals(APEngine.damping));
+			Vector.supply_mult(nv,APEngine.damping,nv);
+			Vector.supply_plus(curr, nv, curr);
+			
+
+			Vector.setTo(temp,prev);
 			
 			// clear the forces
-			forces.setTo(0,0);
+//			forces.setTo(0,0);
+			forces[0] = 0;
+			forces[1] = 0;
 		}
 			
-		public final Collision getComponents(Vector collisionNormal) {
+		public final Collision getComponents(int[] collisionNormal) {
 			supply_getVelocity(vel);
 
-			int vdotn = collisionNormal.dot(vel);
+//			int vdotn = collisionNormal.dot(vel);
+			int vdotn = Vector.dot(collisionNormal, vel);
 			
-			collisionNormal.supply_mult(vdotn,collision.vn);
+//			collisionNormal.supply_mult(vdotn,collision.vn);
+			Vector.supply_mult(collisionNormal, vdotn, collision.vn);
 			
-			vel.supply_minus(collision.vn,collision.vt);
+//			vel.supply_minus(collision.vn,collision.vt);
+			Vector.supply_minus(vel, collision.vn, collision.vt);
 
 			return collision;
 		}
 	
-		public void resolveCollision(Vector mtd, Vector vel, Vector n, int d, int o) {	
-			curr.plusEquals(mtd);
+		public void resolveCollision(int[] mtd, int[] vel, int[] n, int d, int o) {	
+//			curr.plusEquals(mtd);
+			Vector.supply_plus(curr,mtd,curr);
 
 			switch (APEngine.collisionResponseMode) {
 				
@@ -338,8 +375,8 @@ import android.graphics.Canvas;
 					break;
 			}
 		}
-	
-		public abstract Interval getProjection(Vector axis);
+//	
+//		public abstract Interval getProjection(Vector axis);
 
 		public void remove(AbstractParticle p, AbstractParticle previous) {
 			if(p == this) {

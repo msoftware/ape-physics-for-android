@@ -199,12 +199,12 @@ public class PhysicsWorld {
 		da.setCollisionRectScale(FP.fromFloat(1.0f));
 		world.addConstraint(da);
 		SpringConstraint ac = new SpringConstraint(a,c,1.0f);
-		ac.setCollidable(false);
+//		ac.setCollidable(true);
 //		ab.setCollisionRectWidth(FP.fromFloat(4.0f));
 //		ab.setCollisionRectScale(FP.fromFloat(0.9f));
 		world.addConstraint(ac);
 		SpringConstraint bd = new SpringConstraint(b,d,1.0f);
-		ac.setCollidable(false);
+//		ac.setCollidable(true);
 //		ab.setCollisionRectWidth(FP.fromFloat(4.0f));
 //		ab.setCollisionRectScale(FP.fromFloat(0.9f));
 		world.addConstraint(bd);
@@ -315,7 +315,7 @@ public class PhysicsWorld {
 		
 		//Pendulum
 		CircleParticle ceilingAnchor = new CircleParticle(GameView.width/2,0.0f,10.0f,true,1.0f,0.3f,0.0f);
-		ceilingAnchor.setCollidable(false);
+//		ceilingAnchor.setCollidable(false);
 		world.addParticle(ceilingAnchor);
 //		RectangleParticle ceilingAnchor = new RectangleParticle(GameView.width/2,0.0f,10.0f,10.0f,0.0f,true,1.0f,0.3f,0.0f,true);
 //		world.addParticle(ceilingAnchor);

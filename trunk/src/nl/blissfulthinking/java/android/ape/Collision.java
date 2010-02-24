@@ -27,10 +27,10 @@ package nl.blissfulthinking.java.android.ape;
 
 	public final class Collision {
 	
-		public final Vector vn;
-		public final Vector vt;
+		public final int[] vn;
+		public final int[] vt;
 		
-		public Collision(Vector vn, Vector vt) {
+		public Collision(int[] vn, int[] vt) {
 			this.vn = vn;
 			this.vt = vt;
 		}

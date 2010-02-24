@@ -256,20 +256,20 @@ import android.graphics.Canvas;
 			updateCornerPositions();
 		}
 
-		// TODO REVIEW FOR ANY POSSIBILITY OF PRECOMPUTING
-		@Override
-		public final Interval getProjection(Vector axis) {
-			
-			int radius =
-				FP.mul(extents[0],FP.abs(axis.dot(axes0)))+
-				FP.mul(extents[1],FP.abs(axis.dot(axes1)));
-			
-			int c = curr.dot(axis);
-			
-			interval.min = c - radius;
-			interval.max = c + radius;
-			return interval;
-		}
+//		// TODO REVIEW FOR ANY POSSIBILITY OF PRECOMPUTING
+//		@Override
+//		public final Interval getProjection(Vector axis) {
+//			
+//			int radius =
+//				FP.mul(extents[0],FP.abs(axis.dot(axes0)))+
+//				FP.mul(extents[1],FP.abs(axis.dot(axes1)));
+//			
+//			int c = curr.dot(axis);
+//			
+//			interval.min = c - radius;
+//			interval.max = c + radius;
+//			return interval;
+//		}
 		// TODO REVIEW FOR ANY POSSIBILITY OF PRECOMPUTING
 	
 		public final Interval getProjection(int[] axis) {
@@ -278,8 +278,8 @@ import android.graphics.Canvas;
 				FP.mul(extents[0],FP.abs(Vector.dot(axis,axes0)))+
 				FP.mul(extents[1],FP.abs(Vector.dot(axis,axes1)));
 			
-			currTemp[0] = curr.x;
-			currTemp[1] = curr.y;
+			currTemp[0] = curr[0];
+			currTemp[1] = curr[1];
 			int c = Vector.dot(currTemp,axis);
 			
 			interval.min = c - radius;
@@ -306,20 +306,20 @@ import android.graphics.Canvas;
 			Vector cornerPosition3 = cornerPositions[2];
 			Vector cornerPosition4 = cornerPositions[3];
 			
-			cornerPosition1.x = curr.x - epx;
-			cornerPosition1.y = curr.y - epy;
+			cornerPosition1.x = curr[0] - epx;
+			cornerPosition1.y = curr[1] - epy;
 			cornerPositions[0] = cornerPosition1;
 			
-			cornerPosition2.x = curr.x + emx;
-			cornerPosition2.y = curr.y + emy;
+			cornerPosition2.x = curr[0] + emx;
+			cornerPosition2.y = curr[1] + emy;
 			cornerPositions[1] = cornerPosition2;
 			
-			cornerPosition3.x = curr.x + epx;
-			cornerPosition3.y = curr.y + epy;
+			cornerPosition3.x = curr[0] + epx;
+			cornerPosition3.y = curr[1] + epy;
 			cornerPositions[2] = cornerPosition3;
 			
-			cornerPosition4.x = curr.x - emx;
-			cornerPosition4.y = curr.y - emy;
+			cornerPosition4.x = curr[0] - emx;
+			cornerPosition4.y = curr[1] - emy;
 			cornerPositions[3] = cornerPosition4;
 		}
 		
@@ -350,4 +350,5 @@ import android.graphics.Canvas;
 			axes1[0] = -s;
 			axes1[1] = c;
 		}
+
 	}

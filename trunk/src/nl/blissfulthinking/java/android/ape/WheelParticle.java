@@ -190,16 +190,17 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 	
 		@Override
 		public void resolveCollision(
-				Vector mtd, 
-				Vector velocity, 
-				Vector normal,
+				int[] mtd, 
+				int[] velocity, 
+				int[] normal,
 				int depth,
 				int order) {
 					
 			super.resolveCollision(mtd, velocity, normal, depth, order);
 			
 			Vector tmp1 = Vector.getNew(0,0);
-			resolve(normal.supply_mult(sign(FP.mul(depth,order)),tmp1));
+			//TODO int[]
+//			resolve(normal.supply_mult(sign(FP.mul(depth,order)),tmp1));
 			Vector.release(tmp1);
 		}
 		
@@ -208,40 +209,49 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		 * simulates torque/wheel-ground interaction - n is the surface normal
 		 * Origins of this code thanks to Raigan Burns, Metanet software
 		 */
-		private void resolve(Vector n) {
+		private void resolve(int[] n) {
 	
 			tan.setTo(-rp.curr.y, rp.curr.x);
 	
 			//MvdA TODO this should be checked to work
-			tan.supply_normalize(tan);
+			//TODO int[]
+//			tan.supply_normalize(tan);
 	
 			// velocity of the wheel's surface 
 			Vector wheelSurfaceVelocity = Vector.getNew(0,0);
-			tan.supply_mult(rp.getSpeed(),wheelSurfaceVelocity);
+			//TODO int[]
+//			tan.supply_mult(rp.getSpeed(),wheelSurfaceVelocity);
 			
 			// the velocity of the wheel's surface relative to the ground
 			//MvdA TODO not tested yet
 			final Vector combinedVelocity = Vector.getNew(0,0);
-			supply_getVelocity(combinedVelocity);
-			combinedVelocity.plusEquals(wheelSurfaceVelocity);
+			//TODO int[]
+//			supply_getVelocity(combinedVelocity);
+			//TODO int[]
+//			combinedVelocity.plusEquals(wheelSurfaceVelocity);
 		
 			// the wheel's comb velocity projected onto the contact normal
-			int cp = combinedVelocity.cross(n);
+			//TODO int[]
+//			int cp = combinedVelocity.cross(n);
 	
 			Vector.release(wheelSurfaceVelocity);
 			Vector.release(combinedVelocity);
 			
 			// set the wheel's spinspeed to track the ground
-			tan.multEquals(cp);
+			//TODO int[]
+//			tan.multEquals(cp);
 			Vector temp = Vector.getNew(0,0);
-			rp.curr.supply_minus(tan,temp); 
+			//TODO int[]
+//			rp.curr.supply_minus(tan,temp); 
 			rp.prev.setTo(temp.x,temp.y);
 			Vector.release(temp);
 	
 			// some of the wheel's torque is removed and converted into linear displacement
 			int  slipSpeed = FP.mul((FP.ONE - _traction),rp.getSpeed());
-			normSlip.setTo(FP.mul(slipSpeed,n.y), FP.mul(slipSpeed,n.x));
-			curr.plusEquals(normSlip);
+			//TODO int[]
+//			normSlip.setTo(FP.mul(slipSpeed,n.y), FP.mul(slipSpeed,n.x));
+			//TODO int[]
+//			curr.plusEquals(normSlip);
 			rp.setSpeed(FP.mul(rp.getSpeed(),_traction));
 		}
 		
@@ -250,8 +260,8 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		 */	
 		private void updateEdgePositions() {
 			
-			int px = curr.x;
-			int py = curr.y;
+			int px = curr[0];
+			int py = curr[1];
 			int rx = rp.curr.x;
 			int ry = rp.curr.y;
 			

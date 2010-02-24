@@ -30,11 +30,11 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 	
 	public final class CollisionDetector {
 		
-		public static final Vector collisionNormal = Vector.getNew(0,0);
-		public static final Vector mult_temp = Vector.getNew(0,0);
-		public static final Vector d = Vector.getNew(0,0);
+		public static final int[] collisionNormal = new int[2];
+		public static final int[] mult_temp = new int[2];
+		public static final int[] d = new int[2];
 		public static final int[] dTemp = new int[2];
-		public static final Vector vertex = Vector.getNew(0,0);
+		public static final int[] vertex = new int[2];
 		
 		/**
 		 * Tests the collision between two objects. If there is a collision it is passed off
@@ -105,11 +105,13 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 			    
 			    if (absA < FP.abs(collisionDepth) || absB < FP.abs(collisionDepth)) {
 			    	if(absA < absB) {
-			    		collisionNormal.setTo(axisA[0],axisA[1]);
+			    		Vector.setTo(axisA,collisionNormal);
+//			    		collisionNormal.setTo(axisA[0],axisA[1]);
 			    		collisionDepth = depthA;
 			    	}
 			    	else {
-			    		collisionNormal.setTo(axisB[0],axisB[1]);
+			    		Vector.setTo(axisB,collisionNormal);
+//			    		collisionNormal.setTo(axisB[0],axisB[1]);
 			    		collisionDepth = depthB;
 			    	}
 			    }
@@ -132,11 +134,13 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 			    
 			    if (absC < FP.abs(collisionDepth) || absD < FP.abs(collisionDepth)) {
 			    	if(absC < absD) {
-			    		collisionNormal.setTo(axisC[0],axisC[1]);
+			    		Vector.setTo(axisC,collisionNormal);
+//			    		collisionNormal.setTo(axisC[0],axisC[1]);
 			    		collisionDepth = depthC;
 			    	}
 			    	else {
-			    		collisionNormal.setTo(axisD[0],axisD[1]);
+			    		Vector.setTo(axisD,collisionNormal);
+//			    		collisionNormal.setTo(axisD[0],axisD[1]);
 			    		collisionDepth = depthD;
 			    	}
 			    }
@@ -163,7 +167,8 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 			}
 	
 			if (FP.abs(depth) < FP.abs(collisionDepth)) {
-				collisionNormal.setTo(boxAxis0[0],boxAxis0[1]);
+				Vector.setTo(boxAxis0,collisionNormal);
+//				collisionNormal.setTo(boxAxis0[0],boxAxis0[1]);
 				collisionDepth = depth;
 			}
 			depth1 = depth;
@@ -175,7 +180,8 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 			}
 	
 			if (FP.abs(depth) < FP.abs(collisionDepth)) {
-				collisionNormal.setTo(boxAxis1[0],boxAxis1[1]);
+				Vector.setTo(boxAxis1,collisionNormal);
+//				collisionNormal.setTo(boxAxis1[0],boxAxis1[1]);
 				collisionDepth = depth;
 			}
 			depth2 = depth;
@@ -184,17 +190,19 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 			int r = ca.radius;
 			if (FP.abs(depth1) < r && FP.abs(depth2) < r) {
 	
-				closestVertexOnOBB(ca.curr, ra);
+				closestVertexOnOBB(ca.curr,ra);
 	
 				// get the distance from the closest vertex on rect to circle center
-				vertex.supply_minus(ca.curr,collisionNormal);
+//				vertex.supply_minus(ca.curr,collisionNormal);
+				Vector.supply_minus(vertex, ca.curr, collisionNormal);
 				
-				int mag = collisionNormal.magnitude();
+				int mag = Vector.magnitude(collisionNormal);
 				collisionDepth = r - mag;
 	
 				if (collisionDepth > 0) {
 					// there is a collision in one of the vertex regions
-					collisionNormal.divEquals(mag);
+//					collisionNormal.divEquals(mag);
+					Vector.supply_div(collisionNormal,mag,collisionNormal);
 				} else {
 					// ra is in vertex region, but is not colliding
 					return;
@@ -214,13 +222,17 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 			
 			int depthY = testIntervals(ca.getIntervalY(), cb.getIntervalY());
 			if (depthY == 0) return;
+			Vector.supply_minus(ca.curr,cb.curr,collisionNormal);
+//			ca.curr.supply_minus(cb.curr,collisionNormal);
 			
-			ca.curr.supply_minus(cb.curr,collisionNormal);
-			int mag = collisionNormal.magnitude();
+			
+			int mag = Vector.magnitude(collisionNormal);
 			int collisionDepth = (ca.radius + cb.radius) - mag;
 			
 			if (collisionDepth > 0) {
-				collisionNormal.divEquals(mag);
+//				collisionNormal.divEquals(mag);
+				Vector.supply_div(collisionNormal, mag, collisionNormal);
+				
 				CollisionResolver.resolveParticleParticle(ca, cb, collisionNormal, collisionDepth);
 			}
 		}
@@ -241,31 +253,38 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 		/**
 		 * Returns the location of the closest vertex on r to point p
 		 */
-		private static final Vector closestVertexOnOBB(Vector p, RectangleParticle r) {
+		private static final void closestVertexOnOBB(int[] p, RectangleParticle r) {
 	
-			p.supply_minus(r.curr,d);
+//			p.supply_minus(r.curr,d);
+			Vector.supply_minus(p,r.curr,d);
 			
-			vertex.setTo(r.curr.x, r.curr.y);
+			Vector.setTo(r.curr,vertex);
 	
 //			for (int i = 0; i < 2; i++) {
-				dTemp[0] = d.x;
-				dTemp[1] = d.y;
+				dTemp[0] = d[0];
+				dTemp[1] = d[1];
 				int dist = Vector.dot(dTemp,r.axes0);
 	
 				if (dist >= 0) dist = r.extents[0];
 				else if (dist < 0) dist = -r.extents[0];
 	
-				vertex.plusEquals(Vector.supply_mult(r.axes0,dist, mult_temp));	
+//				vertex.plusEquals(Vector.supply_mult(r.axes0,dist, mult_temp));
 				
-				dTemp[0] = d.x;
-				dTemp[1] = d.y;
+				Vector.supply_mult(r.axes0,dist,mult_temp);
+				Vector.supply_plus(vertex,mult_temp,vertex);
+				
+				dTemp[0] = d[0];
+				dTemp[1] = d[1];
 				dist = Vector.dot(dTemp,r.axes1);
 				
 				if (dist >= 0) dist = r.extents[1];
 				else if (dist < 0) dist = -r.extents[1];
 	
-				vertex.plusEquals(Vector.supply_mult(r.axes1,dist, mult_temp));	
+//				vertex.plusEquals(Vector.supply_mult(r.axes1,dist, mult_temp));	
+				
+				Vector.supply_mult(r.axes1,dist, mult_temp);
+				Vector.supply_plus(vertex, mult_temp, vertex);
 //			}
-			return vertex;
+//			return vertex;
 		}
 	}
