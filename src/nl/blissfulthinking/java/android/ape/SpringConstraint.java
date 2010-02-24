@@ -39,10 +39,10 @@ import android.graphics.Canvas;
 		
 		private int restLen;
 
-		private final Vector delta = Vector.getNew(0,0);
-		private final Vector center = Vector.getNew(0,0);
-		private final Vector dmd = Vector.getNew(0,0);
-		private final Vector tmp1 = Vector.getNew(0,0);
+		private final int[] delta = new int[2];
+		private final int[] center =  new int[2];
+		private final int[] dmd =  new int[2];
+		private final int[] tmp1 = new int[2];
 		
 		private int deltaLength;
 		
@@ -71,8 +71,10 @@ import android.graphics.Canvas;
 			collisionRectWidth = FP.ONE;
 			collisionRectScale = FP.ONE;
 
-			p1.curr.supply_minus(p2.curr,delta);
-			deltaLength = p1.curr.distance(p2.curr);
+			Vector.supply_minus(p1.curr,p2.curr,delta);
+//			p1.curr.supply_minus(p2.curr,delta);
+//			deltaLength = p1.curr.distance(p2.curr);
+			deltaLength = Vector.distance(p1.curr,p2.curr);
 			restLen = deltaLength; 
 		}
 		
@@ -83,7 +85,7 @@ import android.graphics.Canvas;
 		 * center property.
 		 */			
 		public int getRotation() {
-			return FP.atan2(delta.y,delta.x);
+			return FP.atan2(delta[1],delta[0]);
 		}
 		
 		/**
@@ -93,9 +95,11 @@ import android.graphics.Canvas;
 		 * 
 		 * @returns A Vector representing the center of this SpringConstraint
 		 */			
-		public final Vector getCenter() {
-			p1.curr.supply_plus(p2.curr,center);
-			center.divEquals(FP.TWO);
+		public final int[] getCenter() {
+//			p1.curr.supply_plus(p2.curr,center);
+			Vector.supply_plus(p1.curr,p2.curr,center);
+//			center.divEquals(FP.TWO);
+			Vector.supply_div(center,FP.TWO,center);
 			return center;
 		}
 		
@@ -167,8 +171,11 @@ import android.graphics.Canvas;
 			
 			if (p1.fixed && p2.fixed) return;
 			
-			p1.curr.supply_minus(p2.curr,delta);
-			deltaLength = p1.curr.distance(p2.curr);
+//			p1.curr.supply_minus(p2.curr,delta);
+			Vector.supply_minus(p1.curr, p2.curr, delta);
+			
+//			deltaLength = p1.curr.distance(p2.curr);
+			deltaLength = Vector.distance(p1.curr,p2.curr);
 			if (collidable) { 
 				orientCollisionRectangle();
 				
@@ -176,15 +183,28 @@ import android.graphics.Canvas;
 			
 			int diff = FP.div((deltaLength - restLen),deltaLength);
 			
-			delta.supply_mult(FP.mul(diff,stiffness),dmd);
+//			delta.supply_mult(FP.mul(diff,stiffness),dmd);
+			Vector.supply_mult(delta,FP.mul(diff,stiffness),dmd);
 	
 			int invM1 = p1.invMass;
 			int invM2 = p2.invMass;
 			int sumInvMass = invM1 + invM2;
 			
 			// TODO REVIEW TO SEE IF A SINGLE FIXED PARTICLE IS RESOLVED CORRECTLY
-			if (! p1.fixed) p1.curr.minusEquals(dmd.supply_mult(FP.div(invM1,sumInvMass),tmp1));
-			if (! p2.fixed) p2.curr.plusEquals(dmd.supply_mult(FP.div(invM1,sumInvMass),tmp1));			
+			
+			if (! p1.fixed) {
+//				p1.curr.minusEquals(tmp1);
+				Vector.supply_mult(dmd, FP.div(invM1,sumInvMass), tmp1);
+				Vector.supply_minus(p1.curr,tmp1,p1.curr);
+			}
+		
+			if (! p2.fixed) {
+//				p2.curr.plusEquals(tmp1);
+				Vector.supply_mult(dmd,FP.div(invM1,sumInvMass), tmp1);
+				Vector.supply_plus(p2.curr,tmp1,p2.curr);
+			}
+//			if (! p1.fixed) p1.curr.minusEquals(dmd.supply_mult(FP.div(invM1,sumInvMass),tmp1));
+//			if (! p2.fixed) p2.curr.plusEquals(dmd.supply_mult(FP.div(invM1,sumInvMass),tmp1));			
 		}
 			
 		public RectangleParticle getCollisionRect() {
@@ -196,7 +216,8 @@ import android.graphics.Canvas;
 			getCenter();
 			int rot = getRotation();			
 			
-			collisionRect.curr.setTo(center.x,center.y);
+//			collisionRect.curr.setTo(center.x,center.y);
+			Vector.setTo(center,collisionRect.curr);
 
 			collisionRect.extents[0]=FP.mul(FP.div(deltaLength,FP.TWO), collisionRectScale);
 			collisionRect.extents[1]=FP.div(collisionRectWidth,FP.TWO);
@@ -208,10 +229,10 @@ import android.graphics.Canvas;
 			if (collidable) {
 				collisionRect.drawParticle(c);
 			} else {
-				float X1 = FP.toFloat(p1.curr.x);
-				float Y1 = FP.toFloat(p1.curr.y);
-				float X2 = FP.toFloat(p2.curr.x);
-				float Y2 = FP.toFloat(p2.curr.y);
+				float X1 = FP.toFloat(p1.curr[0]);
+				float Y1 = FP.toFloat(p1.curr[1]);
+				float X2 = FP.toFloat(p2.curr[0]);
+				float Y2 = FP.toFloat(p2.curr[1]);
 				c.drawLines(new float[]{X1,Y1,X2,Y2},Paints.rectanglePaint);
 			}
 		}

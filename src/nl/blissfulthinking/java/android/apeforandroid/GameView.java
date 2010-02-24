@@ -2,6 +2,7 @@ package nl.blissfulthinking.java.android.apeforandroid;
 
 import nl.blissfulthinking.java.android.ape.APEngine;
 import nl.blissfulthinking.java.android.ape.CircleParticle;
+import nl.blissfulthinking.java.android.ape.RectangleParticle;
 import nl.blissfulthinking.java.android.ape.Vector;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -215,11 +216,11 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
     		c.drawRect(10,10,GameView.width-10,GameView.height-10,Paints.circlePaint);
 //			c.drawRect(12,12,GameView.width-12,GameView.height-12,Paints.rectanglePaint);
         	
-        	int l0 = 5;
-        	int l1 = 15;
-			c.drawText("ape-for-android alpha testbed", 15, l0+l1, Paints.textpaint);
-			c.drawText("press the menu button to start the demo", 15, l0+l1, Paints.textpaint);
-			c.drawText("have fun", 15, l0+l1, Paints.textpaint);
+        	int l0 = 0;
+        	int l1 = 18;
+			c.drawText("ape-for-android alpha testbed", 15, l0+=l1, Paints.textpaint);
+			c.drawText("press the menu button to start the demo", 15, l0+=l1, Paints.textpaint);
+			c.drawText("have fun", 15, l0+=l1, Paints.textpaint);
 	
 		}
 
@@ -357,7 +358,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
 //         	}
         	
 //        	APEngine.addParticle(new RectangleParticle(fingerX,fingerY,25,25,0.0f,false,3.0f,0.001f,0.01f,true));
-			APEngine.addParticle(new CircleParticle(fingerX,fingerY,30,false,2.5f,0.1f,0.02f));
+			APEngine.addParticle(new CircleParticle(fingerX+20,fingerY+20,25,false,2.0f,0.1f,0.00f));
          
 //			physicsWorld.setGravity(xgrav,ygrav);
 //         	APEngine.addForce(FP.fromInt(xgrav),FP.fromInt(ygrav));

@@ -34,6 +34,7 @@ public class FP {
 	 public static int HALF_VALUE = FP.fromInt(16383);
 	 public static int ONE = FP.fromInt(1);
 	 public static int TWO = FP.fromInt(2);
+	 public static int SMALL = FP.fromFloat(0.00000001f);
 
      public static final int toInt(int x) { 
           return x >> 16; 

@@ -33,8 +33,8 @@ import android.graphics.Canvas;
 		private final AbstractParticle p1;
 		private final AbstractParticle p2;
 		
-		private static final Vector p1v =  Vector.getNew(0,0);
-		private static final Vector p2v =  Vector.getNew(0,0);
+		private static final int[] p1v =  new int[2];
+		private static final int[] p2v =  new int[2];
 		public SpringConstraintParticle(AbstractParticle p1, AbstractParticle p2) {
 			super(0.0f,0.0f,0.0f,0.0f,0.0f,false,1.0f,0.0f,0.0f,true);
 			this.p1 = p1;
@@ -54,13 +54,15 @@ import android.graphics.Canvas;
 		 * returns the average velocity of the two connected particles
 		 */
 		@Override
-		protected final void supply_getVelocity(Vector result) {
+		protected final void supply_getVelocity(int[] result) {
 			
 			p1.supply_getVelocity(p1v);
 		
 			p2.supply_getVelocity(p2v);
 			
-			result.setTo(FP.div((p1v.x + p2v.x),FP.TWO),FP.div((p1v.y + p2v.y),FP.TWO));
+			result[0] = FP.div((p1v[0] + p2v[0]),FP.TWO);
+			result[1] = FP.div((p1v[1] + p2v[1]),FP.TWO);
+//			Vec.setTo(FP.div((p1v[0] + p2v[0]),FP.TWO),FP.div((p1v[1] + p2v[1]),FP.TWO),result);
 		}	
 		
 		@Override
@@ -72,14 +74,16 @@ import android.graphics.Canvas;
 		
 		
 		@Override
-		public final void resolveCollision(Vector mtd, Vector vel, Vector n, int d, int o) {
+		public final void resolveCollision(int[] mtd, int[] vel, int[] n, int d, int o) {
 			if (! p1.fixed) {
-				p1.curr.plusEquals(mtd);
+//				p1.curr.plusEquals(mtd);
+				Vector.supply_plus(p1.curr, mtd,p1.curr);
 				p1.setVelocity(vel);
 			}
 			
 			if (! p2.fixed) {
-				p2.curr.plusEquals(mtd);
+//				p2.curr.plusEquals(mtd);
+				Vector.supply_plus(p2.curr, mtd,p2.curr);
 				p2.setVelocity(vel);
 			}
 		}

@@ -66,7 +66,7 @@ import android.graphics.Canvas;
 		@Override
 		public final void drawParticle(Canvas c) {
 //			c.drawCircle(FP.toFloat(curr.x)/APEngine.scale,FP.toFloat(curr.y)/APEngine.scale,FP.toFloat(radius)/APEngine.scale,Paints.circlePaint);
-			c.drawCircle(FP.toFloat(curr.x),FP.toFloat(curr.y),FP.toFloat(radius),Paints.circlePaint);
+			c.drawCircle(FP.toFloat(curr[0]),FP.toFloat(curr[1]),FP.toFloat(radius),Paints.circlePaint);
 		}	
 
 		/**
@@ -77,18 +77,18 @@ import android.graphics.Canvas;
 		}
 			
 		// TODO REVIEW FOR ANY POSSIBILITY OF PRECOMPUTING
-		@Override
-		public final Interval getProjection(Vector axis) {
-			int c = curr.dot(axis);
-			interval.min = c - radius;
-			interval.max = c + radius;
-			return interval;
-		}
+////		@Override
+//		public final Interval getProjection(Vector axis) {
+//			int c = curr.dot(axis);
+//			interval.min = c - radius;
+//			interval.max = c + radius;
+//			return interval;
+//		}
 		// TODO REVIEW FOR ANY POSSIBILITY OF PRECOMPUTING
 
 		public final Interval getProjection(int[] axis) {
-			currTemp[0] = curr.x;
-			currTemp[1] = curr.y;
+			currTemp[0] = curr[0];
+			currTemp[1] = curr[1];
 			int c = Vector.dot(currTemp,axis);
 			interval.min = c - radius;
 			interval.max = c + radius;
@@ -96,14 +96,14 @@ import android.graphics.Canvas;
 		}
 		
 		public final Interval getIntervalX() {
-			interval.min = curr.x - radius;
-			interval.max = curr.x + radius;
+			interval.min = curr[0] - radius;
+			interval.max = curr[0] + radius;
 			return interval;
 		}
 			
 		public final Interval getIntervalY() {
-			interval.min = curr.y - radius;
-			interval.max = curr.y + radius;
+			interval.min = curr[1] - radius;
+			interval.max = curr[1] + radius;
 			return interval;
 		}
 	}
