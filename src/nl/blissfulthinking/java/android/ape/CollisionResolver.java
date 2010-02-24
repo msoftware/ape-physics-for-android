@@ -70,21 +70,31 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 			Collision cb = pb.getComponents(normal);
 		 
 		 	// calculate the coefficient of restitution based on the mass
-			
+//			
+//			Vector.supply_mult(cb.vn,FP.mul((te + FP.ONE),mb), tmp1);
+//			Vector.supply_mult(ca.vn,ma - FP.mul(te,mb), tmp2);
+//			Vector.supply_plus(tmp1,tmp2,vnA);	
+//			Vector.supply_div(tmp1,tm,vnA);
+//			
+//			
+//			Vector.supply_mult(ca.vn,FP.mul((te + FP.ONE),ma), tmp1);
+//			Vector.supply_mult(cb.vn,mb - FP.mul(te,ma), tmp2);
+//			Vector.supply_plus(tmp1,tmp2,vnB);	
+//			Vector.supply_div(tmp1,tm,vnB);
+//			
+//			(cb.vn.supply_mult(FP.mul((te + FP.ONE),mb), tmp1).supply_plus(ca.vn.supply_mult(ma - FP.mul(te,mb), tmp2),vnA)).divEquals(tm);		
+//			(ca.vn.supply_mult(FP.mul((te + FP.ONE),ma), tmp1).supply_plus(cb.vn.supply_mult(mb - FP.mul(te,ma), tmp2),vnB)).divEquals(tm);
+//			
 			Vector.supply_mult(cb.vn,FP.mul((te + FP.ONE),mb), tmp1);
-			Vector.supply_mult(ca.vn,ma - FP.mul(te,mb), tmp2);
+			Vector.supply_mult(ca.vn,FP.mul(ma - te,mb), tmp2);
 			Vector.supply_plus(tmp1,tmp2,vnA);	
 			Vector.supply_div(tmp1,tm,vnA);
 			
 			
 			Vector.supply_mult(ca.vn,FP.mul((te + FP.ONE),ma), tmp1);
-			Vector.supply_mult(cb.vn,mb - FP.mul(te,ma), tmp2);
+			Vector.supply_mult(cb.vn,FP.mul(mb - te,ma), tmp2);
 			Vector.supply_plus(tmp1,tmp2,vnB);	
 			Vector.supply_div(tmp1,tm,vnB);
-			
-//			(cb.vn.supply_mult(FP.mul((te + FP.ONE),mb), tmp1).supply_plus(ca.vn.supply_mult(ma - FP.mul(te,mb), tmp2),vnA)).divEquals(tm);		
-//			(ca.vn.supply_mult(FP.mul((te + FP.ONE),ma), tmp1).supply_plus(cb.vn.supply_mult(mb - FP.mul(te,ma), tmp2),vnB)).divEquals(tm);
-//			
 			
 			
 			
@@ -96,14 +106,14 @@ import nl.blissfulthinking.java.android.apeforandroid.FP;
 			
 //			ca.vt.multEquals(tf);
 //			cb.vt.multEquals(tf);
-			Vector.supply_mult(ca.vt,tf,ca.vt);
-			Vector.supply_mult(cb.vt,tf,cb.vt);
+//			Vector.supply_mult(ca.vt,tf,ca.vt);
+//			Vector.supply_mult(cb.vt,tf,cb.vt);
 			
 			
 			// scale the mtd by the ratio of the masses. heavier particles move less
 //			mtd.supply_mult(FP.div(mb,tm),mtdA);
 			Vector.supply_mult(mtd,FP.div(mb,tm),mtdA);
-//			final Vector mtdB = mtd.pool_mult(FP.div(-ma,tm));
+
 //			//TODO test
 //			mtd.supply_mult(-FP.div(ma,tm),mtdB);
 //			mtd.supply_mult(FP.div(-ma,tm),mtdB);

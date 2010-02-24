@@ -126,16 +126,12 @@ public class PhysicsWorld {
 //		world.setMasslessForce(Vector.getNew(0,3));
 		
 //		// car 
-//		WheelParticle wheelParticleA = new WheelParticle(60.0f,10.0f,20.0f,false,3.0f,0.3f,0.0f,1.0f);
+//		CircleParticle wheelParticleA = new CircleParticle(60.0f,10.0f,10.0f,false,3.0f,0.3f,0.2f);
+//		wheelParticleA.setCollidable(false);
 //		world.addParticle(wheelParticleA);
 //		
-//		WheelParticle wheelParticleB = new WheelParticle(140.0f,10.0f,20.0f,false,3.0f,0.3f,0.0f,1.0f);
-//		world.addParticle(wheelParticleB);
-//		
-//		CircleParticle wheelParticleA = new CircleParticle(60.0f,10.0f,20.0f,false,3.0f,0.3f,0.2f);
-//		world.addParticle(wheelParticleA);
-//		
-//		CircleParticle wheelParticleB = new CircleParticle(140.0f,10.0f,20.0f,false,3.0f,0.3f,0.2f);
+//		CircleParticle wheelParticleB = new CircleParticle(140.0f,10.0f,10.0f,false,3.0f,0.3f,0.2f);
+//		wheelParticleB.setCollidable(false);
 //		world.addParticle(wheelParticleB);
 //		
 //		SpringConstraint wheelConnector = new SpringConstraint(wheelParticleA, wheelParticleB,1.0f);
@@ -143,7 +139,7 @@ public class PhysicsWorld {
 //		wheelConnector.setCollisionRectWidth(FP.fromFloat(34.0f));
 //		wheelConnector.setCollisionRectScale(FP.fromFloat(0.8f));
 //		world.addConstraint(wheelConnector);
-////		
+	
 //		float size1 = 15;
 //		float px1 = size1;
 //		float py1 = size1+100;
@@ -168,34 +164,34 @@ public class PhysicsWorld {
 		int posy = 50;
 		int size = 40;
 		int halfsize = 20; 
-		int cornersize = 5;
+		int cornersize = 10;
 		boolean collidable = true;
-		CircleParticle a = new CircleParticle(posx-halfsize,posy-halfsize,cornersize,false,1.0f,0.05f,0.002f);
+		CircleParticle a = new CircleParticle(posx-halfsize,posy-halfsize,cornersize,false,1.0f,0.00f,0.000f);
 		world.addParticle(a);
-		CircleParticle b = new CircleParticle(posx+halfsize,posy-halfsize,cornersize,false,1.0f,0.05f,0.002f);
+		CircleParticle b = new CircleParticle(posx+halfsize,posy-halfsize,cornersize,false,1.0f,0.00f,0.000f);
 		world.addParticle(b);
-		CircleParticle c = new CircleParticle(posx+halfsize,posy+halfsize,cornersize,false,1.0f,0.05f,0.002f);
+		CircleParticle c = new CircleParticle(posx+halfsize,posy+halfsize,cornersize,false,1.0f,0.00f,0.000f);
 		world.addParticle(c);
-		CircleParticle d = new CircleParticle(posx-halfsize,posy+halfsize,cornersize,false,1.0f,0.05f,0.002f);
+		CircleParticle d = new CircleParticle(posx-halfsize,posy+halfsize,cornersize,false,1.0f,0.00f,0.000f);
 		world.addParticle(d);
 		SpringConstraint ab = new SpringConstraint(a,b,1.0f);
 		ab.setCollidable(true);
-		ab.setCollisionRectWidth(FP.fromFloat(7.0f));
+		ab.setCollisionRectWidth(FP.fromFloat(10.0f));
 		ab.setCollisionRectScale(FP.fromFloat(1.f));
 		world.addConstraint(ab);
 		SpringConstraint bc = new SpringConstraint(b,c,1.0f);
 		bc.setCollidable(collidable);
-		bc.setCollisionRectWidth(FP.fromFloat(7.0f));
+		bc.setCollisionRectWidth(FP.fromFloat(10.0f));
 		bc.setCollisionRectScale(FP.fromFloat(1.0f));
 		world.addConstraint(bc);
 		SpringConstraint cd = new SpringConstraint(c,d,1.0f);
 		cd.setCollidable(collidable);
-		cd.setCollisionRectWidth(FP.fromFloat(7.0f));
+		cd.setCollisionRectWidth(FP.fromFloat(10.0f));
 		cd.setCollisionRectScale(FP.fromFloat(1.0f));
 		world.addConstraint(cd);
 		SpringConstraint da = new SpringConstraint(d,a,1.0f);
 		da.setCollidable(collidable);
-		da.setCollisionRectWidth(FP.fromFloat(7.0f));
+		da.setCollisionRectWidth(FP.fromFloat(10.0f));
 		da.setCollisionRectScale(FP.fromFloat(1.0f));
 		world.addConstraint(da);
 		SpringConstraint ac = new SpringConstraint(a,c,1.0f);
@@ -211,108 +207,24 @@ public class PhysicsWorld {
 		
 		// surfaces
 		int thikness = 200;
-		RectangleParticle floor = new RectangleParticle(GameView.width/2,GameView.height+(thikness/2),GameView.width+thikness,thikness,0.0f,true,1.0f,0.0f,0.02f,false);
+		RectangleParticle floor = new RectangleParticle(GameView.width/2,GameView.height+(thikness/2),GameView.width+thikness,thikness,0.0f,true,1.0f,0.0f,0.00f,false);
 		APEngine.addParticle(floor);
 		
-		RectangleParticle ceiling = new RectangleParticle(GameView.width/2,0-(thikness/2),GameView.width+thikness,thikness,0.0f,true,1.0f,0.0f,0.02f,false);
+		RectangleParticle ceiling = new RectangleParticle(GameView.width/2,0-(thikness/2),GameView.width+thikness,thikness,0.0f,true,1.0f,0.0f,0.00f,false);
 		APEngine.addParticle(ceiling);
 		
-		RectangleParticle leftWall = new RectangleParticle(-1-(thikness/2),GameView.height/2,thikness,GameView.height+thikness,0.0f,true,1.0f,0.0f,0.01f,false);
+		RectangleParticle leftWall = new RectangleParticle(-1-(thikness/2),GameView.height/2,thikness,GameView.height+thikness,0.0f,true,1.0f,0.0f,0.00f,false);
 		APEngine.addParticle(leftWall);
 		
-		RectangleParticle rightWall = new RectangleParticle(GameView.width+(thikness/2),GameView.height/2,thikness,GameView.height+thikness,0.0f,true,1.0f,0.0f,0.01f,false);
+		RectangleParticle rightWall = new RectangleParticle(GameView.width+(thikness/2),GameView.height/2,thikness,GameView.height+thikness,0.0f,true,1.0f,0.0f,0.00f,false);
 		APEngine.addParticle(rightWall);
 		
-//		RectangleParticle middleWall1 = new RectangleParticle(GameView.width/2,GameView.height/2,30,150,0.785f,true,1.0f,0.0f,0.01f,true);
-//		APEngine.addParticle(middleWall1);
-//		RectangleParticle middleWall = new RectangleParticle(GameView.width/2,GameView.height/2,30,150,2.355f,true,1.0f,0.0f,0.01f,true);
-//		APEngine.addParticle(middleWall);
-		
-//		APEngine.addParticle(new CircleParticle(GameView.width/2,GameView.height/2,100.0f,true,4.0f,0.4f,0.002f));
-		
-		
-//		RectangleParticle floor = new RectangleParticle(325,324,649,50,0,true,1,0.3,0);
-//		world.addParticle(floor);
-//
-//		RectangleParticle floorBumpA = new RectangleParticle(400,295,90,30, 0.4,true,1,0.3,0);
-//		world.addParticle(floorBumpA);
-//		
-//		RectangleParticle floorBumpB = new RectangleParticle(330,295,90,30,-0.4,true,1,0.3,0);
-//		//world.addParticle(floorBumpB);
-//		
-//		RectangleParticle floorLeftAngle = new RectangleParticle(80,290,120,20,0.5,true,1,0.3,0);
-//		world.addParticle(floorLeftAngle);
-//		
-//		RectangleParticle leftWall = new RectangleParticle(15,99,30,500,0,true,1,0.3,0);
-//		world.addParticle(leftWall);
-//		
-//		
-//		RectangleParticle rightWall = new RectangleParticle(634,99,30,500,0,true,1,0.3,0);
-//		world.addParticle(rightWall);
-//		
-//		RectangleParticle bridgeStart = new RectangleParticle(80,70,150,25,0,true,1,0.3,0);
-//		world.addParticle(bridgeStart);
-//		
-//		RectangleParticle bridgeEnd = new RectangleParticle(380,70,100,25,0,true,1,0.3,0);
-//		world.addParticle(bridgeEnd);
-//		
-//		RectangleParticle bridgeEndAngle = new RectangleParticle(455,102,100,25,0.8,true,1,0.3,0);
-//		world.addParticle(bridgeEndAngle);
-//		
-//		RectangleParticle rightWallAngle = new RectangleParticle(595,102,100,25,-0.8,true,1,0.3,0);
-//		world.addParticle(rightWallAngle);
-//		
-//		// rotator
-//		rotatingRect = new RectangleParticle(525,180,70,14,0,true,1,0.3,0);
-//		world.addParticle(rotatingRect);
-//		
-//		RectangleParticle littleRect = new RectangleParticle(525,180,10,10,0,false,1,0.3,0);
-//		world.addParticle(littleRect);
-//		
-//		SpringConstraint rotConnector = new SpringConstraint((AbstractParticle)rotatingRect.getCornerParticles().get(1), (AbstractParticle)littleRect, 0.2);
-//		world.addConstraint(rotConnector);
-//		
-//		// bridge
-//		RectangleParticle bridgeStart = new RectangleParticle(0.0f,10.0f,10.0f,25.0f,0.0f,true,1.0f,0.3f,0.0f,true);
-//		world.addParticle(bridgeStart);
-//		
-//		RectangleParticle bridgeEnd = new RectangleParticle(290.0f,10.0f,100.0f,25.0f,0.0f,true,1.0f,0.3f,0.0f,true);
-//		world.addParticle(bridgeEnd);
-//		
-//		CircleParticle bridgePA = new CircleParticle(10.0f,70.0f,15.0f,false,1.0f,0.3f,0.0f);
-//		world.addParticle(bridgePA);
-//		
-//		CircleParticle bridgePB = new CircleParticle(50.0f,70.0f,15.0f,false,1.0f,0.3f,0.0f);
-//		world.addParticle(bridgePB);
-//		
-//		CircleParticle bridgePC = new CircleParticle(290.0f,70.0f,15.0f,false,1.0f,0.3f,0.0f);
-//		world.addParticle(bridgePC);
-//		
-//		SpringConstraint bridgeConnA = new SpringConstraint(bridgeStart, bridgePA, 0.9f);
-//		bridgeConnA.setCollidable(false);
-//		bridgeConnA.setCollisionRectScale(FP.fromFloat(0.3f));
-//		bridgeConnA.setCollisionRectWidth(FP.fromFloat(10.0f));
-//		world.addConstraint(bridgeConnA);
-//
-//		SpringConstraint bridgeConnB = new SpringConstraint(bridgePA, bridgePB, 0.9f);
-//		bridgeConnB.setCollidable(true);
-//		bridgeConnB.setCollisionRectScale(FP.fromFloat(0.3f));
-//		bridgeConnB.setCollisionRectWidth(FP.fromFloat(10.0f));
-//		world.addConstraint(bridgeConnB);
-//		
-//		SpringConstraint bridgeConnC = new SpringConstraint(bridgePB, bridgePC, 0.9f);
-//		bridgeConnC.setCollidable(true);
-//		bridgeConnC.setCollisionRectScale(FP.fromFloat(0.3f));
-//		bridgeConnC.setCollisionRectWidth(FP.fromFloat(8.0f));
-//		world.addConstraint(bridgeConnC);
-//		
-//		SpringConstraint bridgeConnD = new SpringConstraint(bridgePC, bridgeEnd, 0.9f);
-//		bridgeConnD.setCollidable(false);
-//		bridgeConnD.setCollisionRectScale(FP.fromFloat(0.3f));
-//		bridgeConnD.setCollisionRectWidth(FP.fromFloat(10.0f));
-//		
-//		world.addConstraint(bridgeConnD);
-		
+		RectangleParticle middleWall1 = new RectangleParticle(GameView.width/2,(GameView.height/2)+75,30,150,0.785f,true,1.0f,0.0f,0.00f,true);
+		APEngine.addParticle(middleWall1);
+		RectangleParticle middleWall = new RectangleParticle(GameView.width/2,(GameView.height/2)+75,30,150,2.355f,true,1.0f,0.0f,0.00f,true);
+		APEngine.addParticle(middleWall);
+
+	
 		//Pendulum
 		CircleParticle ceilingAnchor = new CircleParticle(GameView.width/2,0.0f,10.0f,true,1.0f,0.3f,0.0f);
 //		ceilingAnchor.setCollidable(false);
@@ -350,21 +262,6 @@ public class PhysicsWorld {
 		chainConnection3.setCollisionRectScale(FP.fromFloat(0.8f));
 		chainConnection3.setCollisionRectWidth(FP.fromFloat(5.0f));
 		world.addConstraint(chainConnection3);
-		
-//		SpringConstraint bridgeConnD = new SpringConstraint(chain3, bridgeEnd, 0.9f);
-//		bridgeConnD.setCollidable(false);
-//		bridgeConnD.setCollisionRectScale(FP.fromFloat(0.3f));
-//		bridgeConnD.setCollisionRectWidth(FP.fromFloat(10.0f));
-//		world.addConstraint(bridgeConnD);
-	
-
-		/*
-		After adding all the particles and constraints, you can retrieve them using the 
-		getXXX methods from the world class. Then you can go through them and paint them
-		when necessary. Alternatively you can keep track of them yourself by manually adding
-		them to your own lists.
-		*/
-//		paintQueue = world.getAll();
 	}
 	
 
