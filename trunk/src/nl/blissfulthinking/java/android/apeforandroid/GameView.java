@@ -72,8 +72,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
         private boolean mRun = false;
         /** Handle to the surface manager object we interact with */
         private SurfaceHolder mSurfaceHolder;
-		private int type1won;
-		private int type2won;
+//		private int type1won;
+//		private int type2won;
 
         public GameThread(SurfaceHolder surfaceHolder, Context context,
                 Handler handler) {
@@ -217,7 +217,7 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
 //			c.drawRect(12,12,GameView.width-12,GameView.height-12,Paints.rectanglePaint);
         	
         	int l0 = 0;
-        	int l1 = 18;
+        	int l1 = 25;
 			c.drawText("ape-for-android alpha testbed", 15, l0+=l1, Paints.textpaint);
 			c.drawText("press the menu button to start the demo", 15, l0+=l1, Paints.textpaint);
 			c.drawText("have fun", 15, l0+=l1, Paints.textpaint);
@@ -357,8 +357,8 @@ class GameView extends SurfaceView implements SurfaceHolder.Callback, SensorEven
 //        		ygrav = -4;
 //         	}
         	
-//        	APEngine.addParticle(new RectangleParticle(fingerX,fingerY,25,25,0.0f,false,3.0f,0.001f,0.01f,true));
-			APEngine.addParticle(new CircleParticle(fingerX+20,fingerY+20,25,false,2.0f,0.1f,0.00f));
+//        	APEngine.addParticle(new RectangleParticle(fingerX,fingerY,25,25,0.0f,false,3.0f,0.000f,0.00f,true));
+			APEngine.addParticle(new CircleParticle(fingerX+20,fingerY+20,25,false,2.0f,0.0f,0.00f));
          
 //			physicsWorld.setGravity(xgrav,ygrav);
 //         	APEngine.addForce(FP.fromInt(xgrav),FP.fromInt(ygrav));
